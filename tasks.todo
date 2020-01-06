@@ -1,0 +1,23 @@
+1. Firebase Authentication Integration Kit Register User:
+  ☐ Sign In and Sign Up with Email. @est(1h) @started(20-01-07 01:10)
+  ☐ Sign In with Facebook. @est(1h)
+  ☐ Sign In with Google. @est(1h)
+  ☐ Firebase Phone Auth Flutter @est(1h)
+  ☐ Reset Password @est(1h)
+  ☐ Form Validation @est(30m)
+
+2. Firebase Notification Integration Kit:
+  ☐ Push notification. @est(1h)
+
+3. Admob Integration Kit:
+  ☐ Flutter firebase Admob @est(1h)
+
+4. Firebase Chat Integration Kit:
+  ☐ Chat @est(3h)
+
+☐ Firestore & Firestorage Integration Kit
+☐ Firebase authentication for flutter web
+☐ Flutter firebase dynamic links.
+☐ Firebase integration in flutter web
+
+☐ analytics
