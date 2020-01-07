@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_fire_plus/pages/app.dart';
 import 'package:flutter_fire_plus/pages/login.dart';
 import 'package:flutter_fire_plus/pages/login_phone.dart';
 import 'package:flutter_fire_plus/pages/sign_up.dart';
@@ -9,6 +10,8 @@ import 'package:flutter_fire_plus/widgets/long_button.dart';
 
 class Welcome extends StatelessWidget {
   static const routeName = '/welcome';
+
+  const Welcome();
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +54,6 @@ class Welcome extends StatelessWidget {
               MyDivider(),
               LongButton(
                 label: 'CREATE ACCOUNT',
-                color: Colors.white24,
                 callback: () {
                   Navigator.of(context).pushNamed(SignUpPage.routeName);
                 },

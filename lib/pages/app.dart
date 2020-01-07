@@ -13,6 +13,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
+    // Navigator.pop(context);
     return Scaffold(
       appBar: AppBar(title: Text('Baby Name Votes')),
       body: _buildBody(context),
