@@ -30,7 +30,7 @@ class LoginPhone extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 InputField(
-                  lable: 'Phone No.',
+                  label: 'Phone No.',
                   keyboardType: TextInputType.number,
                   validator: (value) {
                     if (value.isEmpty || value.length < 10) {

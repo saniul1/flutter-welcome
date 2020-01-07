@@ -3,18 +3,20 @@ import 'package:flutter/material.dart';
 class InputField extends StatelessWidget {
   const InputField({
     Key key,
-    @required this.lable,
+    @required this.label,
     this.obscureText = false,
     this.keyboardType,
     this.controller,
     this.validator,
+    this.onSaved,
   }) : super(key: key);
 
-  final String lable;
+  final String label;
   final bool obscureText;
   final TextInputType keyboardType;
   final TextEditingController controller;
   final Function validator;
+  final Function onSaved;
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +25,10 @@ class InputField extends StatelessWidget {
       keyboardType: keyboardType,
       validator: validator,
       controller: controller,
+      onSaved: onSaved,
       style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
-        labelText: lable,
+        labelText: label,
         fillColor: Colors.white,
         hintStyle: TextStyle(color: Colors.white),
         labelStyle: TextStyle(color: Colors.white),

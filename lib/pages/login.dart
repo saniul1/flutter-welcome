@@ -30,7 +30,7 @@ class Login extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 InputField(
-                  lable: 'Email',
+                  label: 'Email',
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value.isEmpty || !value.contains('@')) {
@@ -41,7 +41,7 @@ class Login extends StatelessWidget {
                 ),
                 buildSizedBox(),
                 InputField(
-                  lable: 'Password',
+                  label: 'Password',
                   obscureText: true,
                 ),
                 buildSizedBox(val: 32),

@@ -27,10 +27,6 @@ class Auth extends ChangeNotifier implements BaseAuth {
   String _userId;
   AuthStatus _authStatus = AuthStatus.NOT_DETERMINED;
 
-  bool get isAuth {
-    return _authStatus == AuthStatus.LOGGED_IN;
-  }
-
   Future<bool> checkAuth() async {
     return await getCurrentUser().then((user) {
       if (user != null) {
@@ -53,9 +49,13 @@ class Auth extends ChangeNotifier implements BaseAuth {
   }
 
   Future<String> signUp(String email, String password) async {
+    print('$email, $password');
     AuthResult result = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email, password: password);
+    print(result);
     FirebaseUser user = result.user;
+    _userId = user.uid.toString();
+    print('id: $_userId');
     return user.uid;
   }
 
@@ -65,6 +65,7 @@ class Auth extends ChangeNotifier implements BaseAuth {
   }
 
   Future<void> signOut() async {
+    print('Signed out');
     return _firebaseAuth.signOut();
   }
 

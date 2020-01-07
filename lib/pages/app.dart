@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_fire_plus/providers/auth.dart';
 
 class MyHomePage extends StatefulWidget {
   static const routeName = '/home-page';
@@ -15,7 +17,17 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     // Navigator.pop(context);
     return Scaffold(
-      appBar: AppBar(title: Text('Baby Name Votes')),
+      appBar: AppBar(
+        title: Text('Baby Name Votes'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.exit_to_app),
+            onPressed: () {
+              Provider.of<Auth>(context, listen: false).signOut();
+            },
+          )
+        ],
+      ),
       body: _buildBody(context),
     );
   }

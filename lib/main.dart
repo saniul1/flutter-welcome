@@ -21,9 +21,18 @@ class MyApp extends StatelessWidget {
           builder: (context) => MyHomePage(),
           settings: settings,
         ),
-    SignUpPage.routeName: (_) => SignUpPage(),
-    Login.routeName: (_) => Login(),
-    LoginPhone.routeName: (_) => LoginPhone(),
+    SignUpPage.routeName: (settings) => MaterialPageRoute(
+          builder: (context) => SignUpPage(),
+          settings: settings,
+        ),
+    Login.routeName: (settings) => MaterialPageRoute(
+          builder: (context) => Login(),
+          settings: settings,
+        ),
+    LoginPhone.routeName: (settings) => MaterialPageRoute(
+          builder: (context) => LoginPhone(),
+          settings: settings,
+        ),
   };
 
   @override
@@ -43,7 +52,6 @@ class MyApp extends StatelessWidget {
           home: FutureBuilder(
             future: auth.checkAuth(),
             builder: (context, authResultSnapshot) {
-              print(authResultSnapshot.data);
               return authResultSnapshot.connectionState ==
                       ConnectionState.waiting
                   ? SplashScreen()
