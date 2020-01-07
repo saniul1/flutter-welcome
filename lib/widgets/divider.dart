@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_fire_plus/styles/colors.dart';
 
 class MyDivider extends StatelessWidget {
   const MyDivider({
@@ -12,7 +13,8 @@ class MyDivider extends StatelessWidget {
       child: Row(children: <Widget>[
         Expanded(
           child: Divider(
-            color: const Color(0xFFCC1D1D),
+            color: MyColors.primaryColor,
+            thickness: 1,
           ),
         ),
         SizedBox(
@@ -23,7 +25,8 @@ class MyDivider extends StatelessWidget {
         ),
         Expanded(
           child: Divider(
-            color: const Color(0xFFCC1D1D),
+            color: MyColors.primaryColor,
+            thickness: 1,
           ),
         ),
       ]),

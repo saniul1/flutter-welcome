@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_fire_plus/pages/login.dart';
 import 'package:flutter_fire_plus/pages/login_phone.dart';
 import 'package:flutter_fire_plus/pages/sign_up.dart';
+import 'package:flutter_fire_plus/styles/colors.dart';
 import 'package:flutter_fire_plus/widgets/divider.dart';
+import 'package:flutter_fire_plus/utils/helper.dart';
 import 'package:flutter_fire_plus/widgets/long_button.dart';
 
 class Welcome extends StatelessWidget {
@@ -26,14 +28,20 @@ class Welcome extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               LongButton(
+                label: 'Login with google',
+                color: MyColors.googleColor,
+                callback: () {
+                  buildLoadingDialog(context);
+                },
+              ),
+              buildSizedBox(val: 16),
+              LongButton(
                 label: 'Login with mobile',
                 callback: () {
                   Navigator.of(context).pushNamed(LoginPhone.routeName);
                 },
               ),
-              SizedBox(
-                height: 16,
-              ),
+              buildSizedBox(val: 16),
               LongButton(
                 label: 'Login with email',
                 callback: () {

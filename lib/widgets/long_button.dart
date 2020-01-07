@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_fire_plus/styles/colors.dart';
 
 class LongButton extends StatelessWidget {
   const LongButton({
@@ -17,7 +18,7 @@ class LongButton extends StatelessWidget {
     return RaisedButton(
       onPressed: callback,
       padding: const EdgeInsets.all(14),
-      color: color ?? const Color(0xFFCC1D1D),
+      color: color ?? MyColors.primaryColor,
       textColor: Colors.white,
       textTheme: ButtonTextTheme.normal,
       shape: RoundedRectangleBorder(

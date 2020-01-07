@@ -3,6 +3,7 @@ import 'package:flutter_fire_plus/pages/sign_up.dart';
 import 'package:flutter_fire_plus/widgets/divider.dart';
 import 'package:flutter_fire_plus/widgets/long_button.dart';
 import 'package:flutter_fire_plus/widgets/input_field.dart';
+import 'package:flutter_fire_plus/utils/helper.dart';
 import 'package:flutter_fire_plus/widgets/long_flat_button.dart';
 
 class LoginPhone extends StatelessWidget {
@@ -56,12 +57,6 @@ class LoginPhone extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-
-  SizedBox buildSizedBox({val = 16}) {
-    return SizedBox(
-      height: double.parse(val.toString()),
     );
   }
 }
