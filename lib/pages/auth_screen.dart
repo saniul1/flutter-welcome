@@ -14,6 +14,7 @@ class Welcome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('Wel: Why i\'m here?');
     return Scaffold(
       appBar: AppBar(
         elevation: 0,

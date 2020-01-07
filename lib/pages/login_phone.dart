@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_fire_plus/pages/login.dart';
 import 'package:flutter_fire_plus/pages/sign_up.dart';
 import 'package:flutter_fire_plus/widgets/divider.dart';
 import 'package:flutter_fire_plus/widgets/long_button.dart';
@@ -48,9 +49,9 @@ class LoginPhone extends StatelessWidget {
                 ),
                 MyDivider(),
                 LongFlatButton(
-                  label: 'Don\'t have an Account? Signup',
-                  callback: () => Navigator.of(context)
-                      .popAndPushNamed(SignUpPage.routeName),
+                  label: 'Have an email address? Login',
+                  callback: () =>
+                      Navigator.of(context).popAndPushNamed(Login.routeName),
                 )
               ],
             ),

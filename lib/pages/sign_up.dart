@@ -22,33 +22,13 @@ class SignUpPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void _showErrorDialog(String message) {
-      showDialog(
-        context: context,
-        builder: (ctx) => AlertDialog(
-          title: Text('An Error Occurred!'),
-          content: Text(message),
-          actions: <Widget>[
-            FlatButton(
-              child: Text('Okay'),
-              onPressed: () {
-                Navigator.of(ctx).pop();
-              },
-            )
-          ],
-        ),
-      );
-    }
-
     Future<void> _submit() async {
       if (!_formKey.currentState.validate()) {
-        // Invalid!
-        return;
+        return; // Invalid!
       }
       buildLoadingDialog(context);
       _formKey.currentState.save();
       try {
-        print(_authData);
         final _userId = await Provider.of<Auth>(context, listen: false).signUp(
           _authData['email'],
           _authData['password'],
@@ -68,11 +48,13 @@ class SignUpPage extends StatelessWidget {
         } else if (error.toString().contains('INVALID_PASSWORD')) {
           errorMessage = 'Invalid password.';
         }
-        _showErrorDialog(errorMessage);
+        Navigator.pop(context);
+        showErrorDialog(context, errorMessage);
       } catch (error) {
         const errorMessage =
             'Could not authenticate you. Please try again later.';
-        _showErrorDialog(errorMessage);
+        Navigator.pop(context);
+        showErrorDialog(context, errorMessage);
       }
     }
 
@@ -103,8 +85,8 @@ class SignUpPage extends StatelessWidget {
                         InputField(
                           label: 'Name',
                           validator: (value) {
-                            if (value.isEmpty || value.length <= 3) {
-                              return 'Password is too short!';
+                            if (value.isEmpty || value.length < 3) {
+                              return 'Name is too short!';
                             }
                             return null;
                           },

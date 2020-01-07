@@ -8,9 +8,9 @@ SizedBox buildSizedBox({val = 16}) {
 }
 
 Future buildLoadingDialog(BuildContext context) {
-  Future.delayed(Duration(seconds: 10)).then((_) {
-    Navigator.pop(context);
-  });
+  // Future.delayed(Duration(seconds: 10)).then((_) {
+  //   Navigator.pop(context);
+  // });
   return showDialog(
     context: context,
     barrierDismissible: false,
@@ -40,5 +40,23 @@ Future buildLoadingDialog(BuildContext context) {
         ),
       );
     },
+  );
+}
+
+void showErrorDialog(BuildContext context, String message) {
+  showDialog(
+    context: context,
+    builder: (ctx) => AlertDialog(
+      title: Text('An Error Occurred!'),
+      content: Text(message),
+      actions: <Widget>[
+        FlatButton(
+          child: Text('Okay'),
+          onPressed: () {
+            Navigator.of(ctx).pop();
+          },
+        )
+      ],
+    ),
   );
 }
