@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_fire_plus/pages/app.dart';
+import 'package:flutter_fire_plus/pages/auth_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_fire_plus/providers/auth.dart';
 import 'package:flutter_fire_plus/pages/sign_up.dart';
@@ -19,7 +21,6 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('Login: hmmm');
     Future<void> _submit() async {
       if (!_formKey.currentState.validate()) {
         return; // Invalid!
@@ -31,8 +32,12 @@ class Login extends StatelessWidget {
           _authData['email'],
           _authData['password'],
         );
-        print('sign_user: $_userId');
+        print('Signed_in_user: $_userId');
         Navigator.pop(context);
+        if (_userId != null && _userId.length > 0) {
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              MyHomePage.routeName, ModalRoute.withName(Welcome.routeName));
+        }
       } on HttpException catch (error) {
         var errorMessage = 'Authentication failed';
         if (error.toString().contains('WRONG_PASSWORD')) {

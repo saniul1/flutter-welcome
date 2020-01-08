@@ -6,6 +6,8 @@ import 'package:flutter_fire_plus/styles/colors.dart';
 import 'package:flutter_fire_plus/widgets/divider.dart';
 import 'package:flutter_fire_plus/utils/helper.dart';
 import 'package:flutter_fire_plus/widgets/long_button.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_fire_plus/providers/auth.dart';
 
 class Welcome extends StatelessWidget {
   static const routeName = '/welcome';
@@ -14,7 +16,6 @@ class Welcome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('Wel: Why i\'m here?');
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -34,7 +35,7 @@ class Welcome extends StatelessWidget {
                 label: 'Login with google',
                 color: MyColors.googleColor,
                 callback: () {
-                  buildLoadingDialog(context);
+                  // buildLoadingDialog(context);
                 },
               ),
               buildSizedBox(val: 16),

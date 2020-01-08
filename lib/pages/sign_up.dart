@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_fire_plus/pages/auth_screen.dart';
+import 'package:flutter_fire_plus/pages/app.dart';
 import 'package:flutter_fire_plus/providers/auth.dart';
 import 'package:flutter_fire_plus/pages/login.dart';
 import 'package:flutter_fire_plus/widgets/divider.dart';
@@ -35,6 +37,10 @@ class SignUpPage extends StatelessWidget {
         );
         print('new_user: $_userId');
         Navigator.pop(context);
+        if (_userId != null && _userId.length > 0) {
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              MyHomePage.routeName, ModalRoute.withName(Welcome.routeName));
+        }
       } on HttpException catch (error) {
         var errorMessage = 'Authentication failed';
         if (error.toString().contains('EMAIL_EXISTS')) {

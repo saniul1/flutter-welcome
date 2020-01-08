@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_fire_plus/pages/login.dart';
+import 'package:flutter_fire_plus/pages/auth_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_fire_plus/providers/auth.dart';
@@ -14,19 +14,50 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  Future<void> _confirmLogout(BuildContext context) async {
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Are you sure?'),
+        content: Text('Do you want to log out and go back to log in page.'),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('yes'),
+            onPressed: () {
+              Navigator.of(context).pop(true);
+            },
+          ),
+          FlatButton(
+            child: Text('No'),
+            onPressed: () {
+              Navigator.of(context).pop(false);
+            },
+          )
+        ],
+      ),
+    ).then((isConfirmed) async {
+      if (isConfirmed) {
+        try {
+          await Provider.of<Auth>(context, listen: false).signOut();
+          print('Signed out');
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              Welcome.routeName, ModalRoute.withName(MyHomePage.routeName));
+        } catch (e) {
+          print(e);
+        }
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    print('Home: I was here.');
-    // Navigator.pop(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Baby Name Votes'),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.exit_to_app),
-            onPressed: () {
-              Provider.of<Auth>(context, listen: false).signOut();
-            },
+            onPressed: () => _confirmLogout(context),
           )
         ],
       ),
