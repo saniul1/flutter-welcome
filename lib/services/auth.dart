@@ -48,6 +48,46 @@ class Auth extends ChangeNotifier {
     }
   }
 
+  Future<void> verifyPhone(
+    String phoneNumber, {
+    PhoneCodeSent onSuccess,
+    PhoneVerificationFailed onFailed,
+    PhoneCodeAutoRetrievalTimeout onTimeout,
+  }) async {
+    print('Verifying $phoneNumber');
+    try {
+      await _firebaseAuth.verifyPhoneNumber(
+        phoneNumber: phoneNumber,
+        timeout: Duration(seconds: 60),
+        verificationCompleted: (_) {
+          // print('verificationCompleted: $_');
+        },
+        verificationFailed: onFailed,
+        codeSent: onSuccess,
+        codeAutoRetrievalTimeout: onTimeout,
+      );
+    } catch (error) {
+      print(error.code);
+      print(error.message);
+      throw HttpException(error.code, error.message);
+    }
+  }
+
+  Future<String> verifyOTP(String id, String otp) async {
+    try {
+      AuthCredential _authCredential =
+          PhoneAuthProvider.getCredential(verificationId: id, smsCode: otp);
+      AuthResult result =
+          await _firebaseAuth.signInWithCredential(_authCredential);
+      FirebaseUser user = result.user;
+      return user.uid;
+    } catch (error) {
+      print(error.code);
+      print(error.message);
+      throw HttpException(error.code, error.message);
+    }
+  }
+
   Future<FirebaseUser> getCurrentUser() async {
     FirebaseUser user = await _firebaseAuth.currentUser();
     return user;

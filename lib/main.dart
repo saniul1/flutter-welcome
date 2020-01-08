@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_fire_plus/pages/app.dart';
 import 'package:flutter_fire_plus/pages/auth_screen.dart';
+import 'package:flutter_fire_plus/pages/enter_otp.dart';
 import 'package:flutter_fire_plus/pages/login.dart';
 import 'package:flutter_fire_plus/pages/login_phone.dart';
 import 'package:flutter_fire_plus/pages/sign_up.dart';
@@ -31,6 +32,13 @@ class MyApp extends StatelessWidget {
         ),
     LoginPhone.routeName: (settings) => MaterialPageRoute(
           builder: (context) => LoginPhone(),
+          settings: settings,
+        ),
+    EnterOtp.routeName: (settings) => MaterialPageRoute(
+          builder: (context) => EnterOtp(
+            id: settings.arguments.id,
+            phoneNumber: settings.arguments.no,
+          ),
           settings: settings,
         ),
   };
