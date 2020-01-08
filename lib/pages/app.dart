@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_fire_plus/pages/auth_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_fire_plus/providers/auth.dart';
+import 'package:flutter_fire_plus/services/auth.dart';
 
 class MyHomePage extends StatefulWidget {
   static const routeName = '/home-page';

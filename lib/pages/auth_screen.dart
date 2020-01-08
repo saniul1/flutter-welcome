@@ -7,7 +7,7 @@ import 'package:flutter_fire_plus/widgets/divider.dart';
 import 'package:flutter_fire_plus/utils/helper.dart';
 import 'package:flutter_fire_plus/widgets/long_button.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_fire_plus/providers/auth.dart';
+import 'package:flutter_fire_plus/services/auth.dart';
 
 class Welcome extends StatelessWidget {
   static const routeName = '/welcome';

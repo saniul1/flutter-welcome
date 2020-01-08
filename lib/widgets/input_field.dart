@@ -5,6 +5,7 @@ class InputField extends StatelessWidget {
     Key key,
     @required this.label,
     this.obscureText = false,
+    this.prefixText,
     this.keyboardType,
     this.controller,
     this.validator,
@@ -12,6 +13,7 @@ class InputField extends StatelessWidget {
   }) : super(key: key);
 
   final String label;
+  final String prefixText;
   final bool obscureText;
   final TextInputType keyboardType;
   final TextEditingController controller;
@@ -39,6 +41,7 @@ class InputField extends StatelessWidget {
         enabledBorder: UnderlineInputBorder(
           borderSide: const BorderSide(color: Colors.white, width: 1.0),
         ),
+        prefixText: prefixText,
       ),
     );
   }

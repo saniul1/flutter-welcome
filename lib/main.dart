@@ -5,7 +5,7 @@ import 'package:flutter_fire_plus/pages/login.dart';
 import 'package:flutter_fire_plus/pages/login_phone.dart';
 import 'package:flutter_fire_plus/pages/sign_up.dart';
 import 'package:flutter_fire_plus/pages/splash_screen.dart';
-import 'package:flutter_fire_plus/providers/auth.dart';
+import 'package:flutter_fire_plus/services/auth.dart';
 import 'package:flutter_fire_plus/styles/colors.dart';
 import 'package:provider/provider.dart';
 
