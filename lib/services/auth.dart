@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_fire_plus/models/http_exception.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 enum AuthStatus {
   NOT_DETERMINED,
@@ -11,6 +12,7 @@ enum AuthStatus {
 
 class Auth extends ChangeNotifier {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
   AuthStatus _authStatus = AuthStatus.NOT_DETERMINED;
 
   Future<bool> checkAuth() async {
@@ -54,7 +56,7 @@ class Auth extends ChangeNotifier {
     PhoneVerificationFailed onFailed,
     PhoneCodeAutoRetrievalTimeout onTimeout,
   }) async {
-    print('Verifying $phoneNumber');
+    // print('Verifying $phoneNumber');
     try {
       await _firebaseAuth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
@@ -75,10 +77,32 @@ class Auth extends ChangeNotifier {
 
   Future<String> verifyOTP(String id, String otp) async {
     try {
-      AuthCredential _authCredential =
+      final AuthCredential _authCredential =
           PhoneAuthProvider.getCredential(verificationId: id, smsCode: otp);
-      AuthResult result =
+      final AuthResult result =
           await _firebaseAuth.signInWithCredential(_authCredential);
+      FirebaseUser user = result.user;
+      return user.uid;
+    } catch (error) {
+      print(error.code);
+      print(error.message);
+      throw HttpException(error.code, error.message);
+    }
+  }
+
+  Future<String> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+      print(googleUser);
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+      print(googleAuth);
+      final AuthCredential credential = GoogleAuthProvider.getCredential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+      final AuthResult result =
+          await _firebaseAuth.signInWithCredential(credential);
       FirebaseUser user = result.user;
       return user.uid;
     } catch (error) {
