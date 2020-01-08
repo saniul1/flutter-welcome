@@ -40,8 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
         try {
           await Provider.of<Auth>(context, listen: false).signOut();
           print('Signed out');
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              Welcome.routeName, ModalRoute.withName(MyHomePage.routeName));
+          Navigator.of(context).pushReplacementNamed(Welcome.routeName);
         } catch (e) {
           print(e);
         }

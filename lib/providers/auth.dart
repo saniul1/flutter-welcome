@@ -11,14 +11,10 @@ enum AuthStatus {
 
 class Auth extends ChangeNotifier {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  String _userId;
   AuthStatus _authStatus = AuthStatus.NOT_DETERMINED;
 
   Future<bool> checkAuth() async {
     return await getCurrentUser().then((user) {
-      if (user != null) {
-        _userId = user?.uid;
-      }
       _authStatus =
           user?.uid == null ? AuthStatus.NOT_LOGGED_IN : AuthStatus.LOGGED_IN;
     }).then((_) {
