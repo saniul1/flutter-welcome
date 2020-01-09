@@ -65,7 +65,8 @@ class MyHomePage extends StatelessWidget {
                           padding: const EdgeInsets.all(30.0),
                           child: CircleAvatar(
                             radius: 60,
-                            backgroundImage: NetworkImage(user.imageURL),
+                            backgroundImage: NetworkImage(user.imageURL ??
+                                'https://via.placeholder.com/150'),
                             backgroundColor: Colors.grey[200],
                           ),
                         ),
