@@ -33,18 +33,45 @@ class Welcome extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               LongButton(
+                label: 'Login with facebook',
+                color: MyColors.facebookColor,
+                callback: () async {
+                  try {
+                    buildLoadingDialog(context);
+                    final _userId =
+                        await Provider.of<Auth>(context, listen: false)
+                            .signInWithFacebook();
+                    print('Signed_in_user: $_userId');
+                    Navigator.pop(context);
+                    if (_userId != null && _userId.length > 0) {
+                      Navigator.of(context)
+                          .pushReplacementNamed(MyHomePage.routeName);
+                    }
+                  } catch (e) {
+                    Navigator.pop(context);
+                    print(e);
+                  }
+                },
+              ),
+              buildSizedBox(val: 16),
+              LongButton(
                 label: 'Login with google',
                 color: MyColors.googleColor,
                 callback: () async {
-                  buildLoadingDialog(context);
-                  final _userId =
-                      await Provider.of<Auth>(context, listen: false)
-                          .signInWithGoogle();
-                  print('Signed_in_user: $_userId');
-                  Navigator.pop(context);
-                  if (_userId != null && _userId.length > 0) {
-                    Navigator.of(context)
-                        .pushReplacementNamed(MyHomePage.routeName);
+                  try {
+                    buildLoadingDialog(context);
+                    final _userId =
+                        await Provider.of<Auth>(context, listen: false)
+                            .signInWithGoogle();
+                    print('Signed_in_user: $_userId');
+                    Navigator.pop(context);
+                    if (_userId != null && _userId.length > 0) {
+                      Navigator.of(context)
+                          .pushReplacementNamed(MyHomePage.routeName);
+                    }
+                  } catch (e) {
+                    Navigator.pop(context);
+                    print(e);
                   }
                 },
               ),

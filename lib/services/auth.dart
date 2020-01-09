@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_fire_plus/models/http_exception.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 enum AuthStatus {
   NOT_DETERMINED,
@@ -14,6 +15,7 @@ enum AuthStatus {
 class Auth extends ChangeNotifier {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final FacebookLogin _facebookLogIn = FacebookLogin();
   final Firestore _db = Firestore.instance;
   String _userId;
 
@@ -135,6 +137,24 @@ class Auth extends ChangeNotifier {
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
+      final AuthResult result =
+          await _firebaseAuth.signInWithCredential(credential);
+      FirebaseUser user = result.user;
+      await _updateUserData(user);
+      _userId = user.uid;
+      return user.uid;
+    } catch (error) {
+      print(error.code);
+      print(error.message);
+      throw HttpException(error.code, error.message);
+    }
+  }
+
+  Future<String> signInWithFacebook() async {
+    try {
+      final resultFB = await _facebookLogIn.logIn(['email']);
+      AuthCredential credential = FacebookAuthProvider.getCredential(
+          accessToken: resultFB.accessToken.token);
       final AuthResult result =
           await _firebaseAuth.signInWithCredential(credential);
       FirebaseUser user = result.user;

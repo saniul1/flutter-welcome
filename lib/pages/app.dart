@@ -89,42 +89,43 @@ class MyHomePage extends StatelessWidget {
                                     fontSize: 18, color: Colors.black45),
                               ),
                             ),
-                            FutureBuilder(
-                              future: isEmailVerified,
-                              builder: (context, value) {
-                                print(value.data);
-                                return value.connectionState ==
-                                        ConnectionState.waiting
-                                    ? Text('')
-                                    : value.data != null && value.data
-                                        ? Text('Verified')
-                                        : RaisedButton(
-                                            elevation: 0,
-                                            color: Colors.grey[200],
-                                            child: Text('Verify'),
-                                            onPressed: () async {
-                                              try {
-                                                await Provider.of<Auth>(context,
-                                                        listen: false)
-                                                    .sendEmailVerification();
-                                                Scaffold.of(context)
-                                                    .showSnackBar(
-                                                  SnackBar(
-                                                    content: Text(
-                                                        'Email Send! check your inbox.'),
-                                                    action: SnackBarAction(
-                                                      label: 'Dismiss',
-                                                      onPressed: () {},
+                            if (user.email != null)
+                              FutureBuilder(
+                                future: isEmailVerified,
+                                builder: (context, value) {
+                                  return value.connectionState ==
+                                          ConnectionState.waiting
+                                      ? Text('')
+                                      : value.data != null && value.data
+                                          ? Text('Verified')
+                                          : RaisedButton(
+                                              elevation: 0,
+                                              color: Colors.grey[200],
+                                              child: Text('Verify'),
+                                              onPressed: () async {
+                                                try {
+                                                  await Provider.of<Auth>(
+                                                          context,
+                                                          listen: false)
+                                                      .sendEmailVerification();
+                                                  Scaffold.of(context)
+                                                      .showSnackBar(
+                                                    SnackBar(
+                                                      content: Text(
+                                                          'Email Send! check your inbox.'),
+                                                      action: SnackBarAction(
+                                                        label: 'Dismiss',
+                                                        onPressed: () {},
+                                                      ),
                                                     ),
-                                                  ),
-                                                );
-                                              } catch (error) {
-                                                print(error);
-                                              }
-                                            },
-                                          );
-                              },
-                            )
+                                                  );
+                                                } catch (error) {
+                                                  print(error);
+                                                }
+                                              },
+                                            );
+                                },
+                              )
                           ],
                         ),
                         Center(
@@ -142,16 +143,6 @@ class MyHomePage extends StatelessWidget {
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
                               user.createdOn.toDate().toString() ?? '',
-                              style: TextStyle(
-                                  fontSize: 18, color: Colors.black45),
-                            ),
-                          ),
-                        ),
-                        Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              user.lastSeen.toDate().toString() ?? '',
                               style: TextStyle(
                                   fontSize: 18, color: Colors.black45),
                             ),
