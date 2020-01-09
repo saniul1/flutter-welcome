@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_fire_plus/models/http_exception.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,15 +14,43 @@ enum AuthStatus {
 class Auth extends ChangeNotifier {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final Firestore _db = Firestore.instance;
+  String _userId;
+
   AuthStatus _authStatus = AuthStatus.NOT_DETERMINED;
+
+  String get userId {
+    return _userId;
+  }
 
   Future<bool> checkAuth() async {
     return await getCurrentUser().then((user) {
       _authStatus =
           user?.uid == null ? AuthStatus.NOT_LOGGED_IN : AuthStatus.LOGGED_IN;
+      _userId = user.uid;
     }).then((_) {
       return _authStatus == AuthStatus.LOGGED_IN;
     });
+  }
+
+  Future<void> _updateUserData(
+    FirebaseUser user, {
+    String name,
+    String phoneNumber,
+  }) async {
+    DocumentReference ref = _db.collection('users').document(user.uid);
+    final snapshot = await ref.get();
+    final bool isNewUser = snapshot.data == null;
+    print('isNewUser: $isNewUser');
+    return ref.setData({
+      'uid': user.uid,
+      'email': user.email,
+      'photoURL': user.photoUrl,
+      'displayName': user.displayName == null ? name : user.displayName,
+      'phoneNumber': user.phoneNumber == null ? phoneNumber : user.phoneNumber,
+      if (isNewUser) 'createdOn': DateTime.now(),
+      'lastSeen': DateTime.now(),
+    }, merge: true);
   }
 
   Future<String> signIn(String email, String password) async {
@@ -29,6 +58,8 @@ class Auth extends ChangeNotifier {
       AuthResult result = await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
       FirebaseUser user = result.user;
+      await _updateUserData(user);
+      _userId = user.uid;
       return user.uid;
     } catch (error) {
       print(error.code);
@@ -37,11 +68,13 @@ class Auth extends ChangeNotifier {
     }
   }
 
-  Future<String> signUp(String email, String password) async {
+  Future<String> signUp({String email, String password, String name}) async {
     try {
       AuthResult result = await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
       FirebaseUser user = result.user;
+      await _updateUserData(user, name: name);
+      _userId = user.uid;
       return user.uid;
     } catch (error) {
       print(error.code);
@@ -75,13 +108,15 @@ class Auth extends ChangeNotifier {
     }
   }
 
-  Future<String> verifyOTP(String id, String otp) async {
+  Future<String> verifyOTP({String id, String otp, String phoneNo}) async {
     try {
       final AuthCredential _authCredential =
           PhoneAuthProvider.getCredential(verificationId: id, smsCode: otp);
       final AuthResult result =
           await _firebaseAuth.signInWithCredential(_authCredential);
       FirebaseUser user = result.user;
+      await _updateUserData(user, phoneNumber: phoneNo);
+      _userId = user.uid;
       return user.uid;
     } catch (error) {
       print(error.code);
@@ -96,7 +131,6 @@ class Auth extends ChangeNotifier {
       print(googleUser);
       final GoogleSignInAuthentication googleAuth =
           await googleUser.authentication;
-      print(googleAuth);
       final AuthCredential credential = GoogleAuthProvider.getCredential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
@@ -104,6 +138,8 @@ class Auth extends ChangeNotifier {
       final AuthResult result =
           await _firebaseAuth.signInWithCredential(credential);
       FirebaseUser user = result.user;
+      await _updateUserData(user);
+      _userId = user.uid;
       return user.uid;
     } catch (error) {
       print(error.code);

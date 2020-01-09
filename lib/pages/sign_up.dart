@@ -32,8 +32,9 @@ class SignUpPage extends StatelessWidget {
       _formKey.currentState.save();
       try {
         final _userId = await Provider.of<Auth>(context, listen: false).signUp(
-          _authData['email'],
-          _authData['password'],
+          email: _authData['email'],
+          password: _authData['password'],
+          name: _authData['name'],
         );
         print('new_user: $_userId');
         Navigator.pop(context);
@@ -80,7 +81,6 @@ class SignUpPage extends StatelessWidget {
               child: IntrinsicHeight(
                 child: Container(
                   color: Theme.of(context).primaryColor,
-                  // height: MediaQuery.of(context).size.height - 75,
                   padding: const EdgeInsets.all(30),
                   child: Form(
                     key: _formKey,

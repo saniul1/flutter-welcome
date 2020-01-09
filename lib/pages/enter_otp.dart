@@ -32,8 +32,12 @@ class EnterOtp extends StatelessWidget {
       buildLoadingDialog(context);
       _formKey.currentState.save();
       try {
-        final _userId = await Provider.of<Auth>(context, listen: false)
-            .verifyOTP(_authData['id'], _authData['otp']);
+        final _userId =
+            await Provider.of<Auth>(context, listen: false).verifyOTP(
+          id: _authData['id'],
+          otp: _authData['otp'],
+          phoneNo: phoneNumber,
+        );
         print('Signed_in_phone_user: $_userId');
         Navigator.pop(context);
         if (_userId != null && _userId.length > 0) {

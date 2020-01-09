@@ -24,11 +24,11 @@
         <string>com.your.packagename</string>
      ```
   
-- Change minimum SDK to 21 or higher in your 'build.gradle' file inside your `android/app` directory.
+- Change minimum SDK to 23 or higher in your 'build.gradle' file inside your `android/app` directory.
   
   ```java
     defaultConfig {
-      minSdkVersion 21 // this line >= 21
+      minSdkVersion 23 // this line >= 23
     }
   ```
 
@@ -104,7 +104,7 @@
   apply plugin: 'com.google.gms.google-services'
 ```
 
-- add a new dependency to `android/build.gradle`, inside buildscript tag.
+- add a new dependency to `android/build.gradle`, inside `buildscript` tag.
 
 ```java
   buildscript {

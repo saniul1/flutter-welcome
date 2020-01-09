@@ -4,16 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_fire_plus/services/auth.dart';
 
-class MyHomePage extends StatefulWidget {
+class MyHomePage extends StatelessWidget {
   static const routeName = '/home-page';
-
-  @override
-  _MyHomePageState createState() {
-    return _MyHomePageState();
-  }
-}
-
-class _MyHomePageState extends State<MyHomePage> {
   Future<void> _confirmLogout(BuildContext context) async {
     await showDialog(
       context: context,
@@ -50,74 +42,112 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final id = Provider.of<Auth>(context, listen: false).userId;
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Baby Name Votes'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.exit_to_app),
-            onPressed: () => _confirmLogout(context),
-          )
-        ],
-      ),
-      body: _buildBody(context),
-    );
-  }
-
-  Widget _buildBody(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('baby').snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) return LinearProgressIndicator();
-
-        return _buildList(context, snapshot.data.documents);
-      },
-    );
-  }
-
-  Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
-    return ListView(
-      padding: const EdgeInsets.only(top: 20.0),
-      children: snapshot.map((data) => _buildListItem(context, data)).toList(),
-    );
-  }
-
-  Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
-    final record = Record.fromSnapshot(data);
-
-    return Padding(
-      key: ValueKey(record.name),
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey),
-          borderRadius: BorderRadius.circular(5.0),
+        appBar: AppBar(
+          title: Text('Welcome to Fire+'),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.exit_to_app),
+              onPressed: () => _confirmLogout(context),
+            )
+          ],
         ),
-        child: ListTile(
-          title: Text(record.name),
-          trailing: Text(record.votes.toString()),
-          onTap: () =>
-              record.reference.updateData({'votes': FieldValue.increment(1)}),
-        ),
-      ),
-    );
+        body: FutureBuilder(
+          future: getUser(id),
+          builder: (context, snapshot) {
+            final User user = snapshot.data;
+            return user != null
+                ? SingleChildScrollView(
+                    child: Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(30.0),
+                          child: CircleAvatar(
+                            radius: 60,
+                            backgroundImage: NetworkImage(user.imageURL),
+                            backgroundColor: Colors.grey[200],
+                          ),
+                        ),
+                        Center(
+                          child: Text(
+                            user.name ?? '',
+                            style: TextStyle(fontSize: 24),
+                          ),
+                        ),
+                        Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              user.email ?? '',
+                              style: TextStyle(
+                                  fontSize: 18, color: Colors.black45),
+                            ),
+                          ),
+                        ),
+                        Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              user.phoneNumber ?? '',
+                              style: TextStyle(
+                                  fontSize: 18, color: Colors.black45),
+                            ),
+                          ),
+                        ),
+                        Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              user.createdOn.toDate().toString() ?? '',
+                              style: TextStyle(
+                                  fontSize: 18, color: Colors.black45),
+                            ),
+                          ),
+                        ),
+                        Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              user.lastSeen.toDate().toString() ?? '',
+                              style: TextStyle(
+                                  fontSize: 18, color: Colors.black45),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : LinearProgressIndicator();
+          },
+        ));
   }
 }
 
-class Record {
+Future<User> getUser(String id) async {
+  final documentSnapshot =
+      await Firestore.instance.collection("users").document(id).get();
+  final user = User.fromSnapshot(documentSnapshot);
+  return user;
+}
+
+class User {
   final String name;
-  final int votes;
+  final String email;
+  final String phoneNumber;
+  final Timestamp createdOn;
+  final Timestamp lastSeen;
+  final String imageURL;
   final DocumentReference reference;
 
-  Record.fromMap(Map<String, dynamic> map, {this.reference})
-      : assert(map['name'] != null),
-        assert(map['votes'] != null),
-        name = map['name'],
-        votes = map['votes'];
+  User.fromMap(Map<String, dynamic> map, {this.reference})
+      : name = map['displayName'],
+        email = map['email'],
+        imageURL = map['photoURL'],
+        phoneNumber = map['phoneNumber'],
+        createdOn = map['createdOn'],
+        lastSeen = map['lastSeen'];
 
-  Record.fromSnapshot(DocumentSnapshot snapshot)
+  User.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(snapshot.data, reference: snapshot.reference);
-
-  @override
-  String toString() => "Record<$name:$votes>";
 }
