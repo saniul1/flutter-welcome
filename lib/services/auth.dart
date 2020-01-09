@@ -171,12 +171,20 @@ class Auth extends ChangeNotifier {
   }
 
   Future<void> sendEmailVerification() async {
-    FirebaseUser user = await _firebaseAuth.currentUser();
-    user.sendEmailVerification();
+    try {
+      FirebaseUser user = await _firebaseAuth.currentUser();
+      user.sendEmailVerification();
+    } catch (e) {
+      throw e;
+    }
   }
 
   Future<bool> isEmailVerified() async {
-    FirebaseUser user = await _firebaseAuth.currentUser();
-    return user.isEmailVerified;
+    try {
+      FirebaseUser user = await _firebaseAuth.currentUser();
+      return user.isEmailVerified;
+    } catch (e) {
+      throw e;
+    }
   }
 }

@@ -43,7 +43,7 @@ class SignUpPage extends StatelessWidget {
         }
       } on HttpException catch (error) {
         var errorMessage = 'Authentication failed';
-        if (error.toString().contains('EMAIL_EXISTS')) {
+        if (error.toString().contains('EMAIL_ALREADY_IN_USE')) {
           errorMessage = 'This email address is already in use.';
         } else if (error.toString().contains('INVALID_EMAIL')) {
           errorMessage = 'This is not a valid email address';

@@ -11,3 +11,5 @@ Authentication to work properly you need follow previous steps mentioned in ['se
   - Phone
 
   - Google
+
+<!-- after email verify logout and log in again. -->

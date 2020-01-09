@@ -43,6 +43,8 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final id = Provider.of<Auth>(context, listen: false).userId;
+    final Future<bool> isEmailVerified =
+        Provider.of<Auth>(context, listen: false).isEmailVerified();
     return Scaffold(
         appBar: AppBar(
           title: Text('Welcome to Fire+'),
@@ -76,15 +78,54 @@ class MyHomePage extends StatelessWidget {
                             style: TextStyle(fontSize: 24),
                           ),
                         ),
-                        Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              user.email ?? '',
-                              style: TextStyle(
-                                  fontSize: 18, color: Colors.black45),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                user.email ?? '',
+                                style: TextStyle(
+                                    fontSize: 18, color: Colors.black45),
+                              ),
                             ),
-                          ),
+                            FutureBuilder(
+                              future: isEmailVerified,
+                              builder: (context, value) {
+                                print(value.data);
+                                return value.connectionState ==
+                                        ConnectionState.waiting
+                                    ? Text('')
+                                    : value.data != null && value.data
+                                        ? Text('Verified')
+                                        : RaisedButton(
+                                            elevation: 0,
+                                            color: Colors.grey[200],
+                                            child: Text('Verify'),
+                                            onPressed: () async {
+                                              try {
+                                                await Provider.of<Auth>(context,
+                                                        listen: false)
+                                                    .sendEmailVerification();
+                                                Scaffold.of(context)
+                                                    .showSnackBar(
+                                                  SnackBar(
+                                                    content: Text(
+                                                        'Email Send! check your inbox.'),
+                                                    action: SnackBarAction(
+                                                      label: 'Dismiss',
+                                                      onPressed: () {},
+                                                    ),
+                                                  ),
+                                                );
+                                              } catch (error) {
+                                                print(error);
+                                              }
+                                            },
+                                          );
+                              },
+                            )
+                          ],
                         ),
                         Center(
                           child: Padding(
@@ -101,6 +142,16 @@ class MyHomePage extends StatelessWidget {
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
                               user.createdOn.toDate().toString() ?? '',
+                              style: TextStyle(
+                                  fontSize: 18, color: Colors.black45),
+                            ),
+                          ),
+                        ),
+                        Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              user.lastSeen.toDate().toString() ?? '',
                               style: TextStyle(
                                   fontSize: 18, color: Colors.black45),
                             ),
