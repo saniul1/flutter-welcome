@@ -40,7 +40,7 @@ class SignUpPage extends StatelessWidget {
         Navigator.pop(context);
         if (_userId != null && _userId.length > 0) {
           Navigator.of(context).pushNamedAndRemoveUntil(
-              MyHomePage.routeName, ModalRoute.withName(Welcome.routeName));
+              MyHomePage.routeName, (Route<dynamic> route) => false);
         }
       } on HttpException catch (error) {
         var errorMessage = 'Authentication failed';

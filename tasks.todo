@@ -3,12 +3,12 @@
     restructure codes amd login and signup screen, input from.
   ✔ Visual layout - II. @est(2h) @started(20-01-07 14:58) @done(20-01-07 16:45) @lasted(1h47m12s)
     Added loading alert and restructure code.
-  ☐ Sign In and Sign Up with Email. @est(1h)
+  ✔ Sign In and Sign Up with Email. @est(1h) @done(20-01-09 18:03)
   ☐ Sign In with Facebook. @est(1h)
-  ☐ Sign In with Google. @est(1h)
-  ☐ Firebase Phone Auth Flutter @est(1h)
+  ✔ Sign In with Google. @est(1h) @done(20-01-09 18:03)
+  ✔ Firebase Phone Auth Flutter @est(1h) @done(20-01-09 18:03)
   ☐ Reset Password @est(1h)
-  ☐ Form Validation @est(30m)
+  ✔ Form Validation @est(30m) @done(20-01-09 18:03)
 
 2. Firebase Notification Integration Kit:
   ☐ Push notification. @est(1h)
@@ -19,9 +19,9 @@
 4. Firebase Chat Integration Kit:
   ☐ Chat @est(3h)
 
-☐ Firestore & Firestorage Integration Kit
+✔ Firestore & Firestorage Integration Kit @done(20-01-09 18:04)
 ☐ Firebase authentication for flutter web
-☐ Flutter firebase dynamic links.
 ☐ Firebase integration in flutter web
+☐ Flutter firebase dynamic links.
 
 ☐ analytics

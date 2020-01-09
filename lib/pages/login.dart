@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_fire_plus/pages/app.dart';
-import 'package:flutter_fire_plus/pages/auth_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_fire_plus/services/auth.dart';
 import 'package:flutter_fire_plus/pages/sign_up.dart';
@@ -36,7 +35,7 @@ class Login extends StatelessWidget {
         Navigator.pop(context);
         if (_userId != null && _userId.length > 0) {
           Navigator.of(context).pushNamedAndRemoveUntil(
-              MyHomePage.routeName, ModalRoute.withName(Welcome.routeName));
+              MyHomePage.routeName, (Route<dynamic> route) => false);
         }
       } on HttpException catch (error) {
         var errorMessage = 'Authentication failed';
