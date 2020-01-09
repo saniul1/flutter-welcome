@@ -116,6 +116,29 @@ class MyHomePage extends StatelessWidget {
                             ),
                           ),
                         ),
+                        RaisedButton(
+                          elevation: 0,
+                          color: Colors.grey[200],
+                          onPressed: () async {
+                            try {
+                              await Provider.of<Auth>(context, listen: false)
+                                  .resetPassword(user.email);
+                              Scaffold.of(context).showSnackBar(
+                                SnackBar(
+                                  content:
+                                      Text('Email Send! check your inbox.'),
+                                  action: SnackBarAction(
+                                    label: 'Dismiss',
+                                    onPressed: () {},
+                                  ),
+                                ),
+                              );
+                            } catch (error) {
+                              print(error);
+                            }
+                          },
+                          child: Text('Reset Password'),
+                        ),
                       ],
                     ),
                   )

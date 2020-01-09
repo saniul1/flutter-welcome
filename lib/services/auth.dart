@@ -162,6 +162,14 @@ class Auth extends ChangeNotifier {
     return _firebaseAuth.signOut();
   }
 
+  Future<void> resetPassword(String email) async {
+    try {
+      await _firebaseAuth.sendPasswordResetEmail(email: email);
+    } catch (e) {
+      throw e;
+    }
+  }
+
   Future<void> sendEmailVerification() async {
     FirebaseUser user = await _firebaseAuth.currentUser();
     user.sendEmailVerification();

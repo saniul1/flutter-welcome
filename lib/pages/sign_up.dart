@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_fire_plus/pages/auth_screen.dart';
 import 'package:flutter_fire_plus/pages/app.dart';
 import 'package:flutter_fire_plus/services/auth.dart';
 import 'package:flutter_fire_plus/pages/login.dart';
