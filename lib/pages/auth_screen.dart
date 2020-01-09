@@ -33,24 +33,16 @@ class Welcome extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               LongButton(
-                label: 'Login with facebook',
-                color: MyColors.facebookColor,
-                callback: () async {
-                  try {
-                    buildLoadingDialog(context);
-                    final _userId =
-                        await Provider.of<Auth>(context, listen: false)
-                            .signInWithFacebook();
-                    print('Signed_in_user: $_userId');
-                    Navigator.pop(context);
-                    if (_userId != null && _userId.length > 0) {
-                      Navigator.of(context)
-                          .pushReplacementNamed(MyHomePage.routeName);
-                    }
-                  } catch (e) {
-                    Navigator.pop(context);
-                    print(e);
-                  }
+                label: 'Login with mobile',
+                callback: () {
+                  Navigator.of(context).pushNamed(LoginPhone.routeName);
+                },
+              ),
+              buildSizedBox(val: 16),
+              LongButton(
+                label: 'Login with email',
+                callback: () {
+                  Navigator.of(context).pushNamed(Login.routeName);
                 },
               ),
               buildSizedBox(val: 16),
@@ -77,18 +69,27 @@ class Welcome extends StatelessWidget {
               ),
               buildSizedBox(val: 16),
               LongButton(
-                label: 'Login with mobile',
-                callback: () {
-                  Navigator.of(context).pushNamed(LoginPhone.routeName);
+                label: 'Login with facebook',
+                color: MyColors.facebookColor,
+                callback: () async {
+                  try {
+                    buildLoadingDialog(context);
+                    final _userId =
+                        await Provider.of<Auth>(context, listen: false)
+                            .signInWithFacebook();
+                    print('Signed_in_user: $_userId');
+                    Navigator.pop(context);
+                    if (_userId != null && _userId.length > 0) {
+                      Navigator.of(context)
+                          .pushReplacementNamed(MyHomePage.routeName);
+                    }
+                  } catch (e) {
+                    Navigator.pop(context);
+                    print(e);
+                  }
                 },
               ),
               buildSizedBox(val: 16),
-              LongButton(
-                label: 'Login with email',
-                callback: () {
-                  Navigator.of(context).pushNamed(Login.routeName);
-                },
-              ),
               MyDivider(),
               LongButton(
                 label: 'CREATE ACCOUNT',
