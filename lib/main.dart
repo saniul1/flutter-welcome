@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_fire_plus/pages/ChatScreen.dart';
+import 'package:flutter_fire_plus/pages/app%20copy.dart';
 import 'package:flutter_fire_plus/pages/app.dart';
 import 'package:flutter_fire_plus/pages/auth_screen.dart';
 import 'package:flutter_fire_plus/pages/enter_otp.dart';
@@ -56,16 +58,21 @@ class MyApp extends StatelessWidget {
           title: 'Flutter Fire Plus',
           theme: ThemeData(
             primaryColor: MyColors.secondaryColor,
+            accentColor: MyColors.grey,
           ),
-          home: FutureBuilder(
-            future: auth.checkAuth(),
-            builder: (context, authResultSnapshot) {
-              return authResultSnapshot.connectionState ==
-                      ConnectionState.waiting
-                  ? SplashScreen()
-                  : authResultSnapshot.data == true ? MyHomePage() : Welcome();
-            },
-          ),
+          home: true
+              ? ChatScreen()
+              : FutureBuilder(
+                  future: auth.checkAuth(),
+                  builder: (context, authResultSnapshot) {
+                    return authResultSnapshot.connectionState ==
+                            ConnectionState.waiting
+                        ? SplashScreen()
+                        : authResultSnapshot.data == true
+                            ? MyHomePage()
+                            : Welcome();
+                  },
+                ),
           onGenerateRoute: (settings) {
             return pages[settings.name](settings);
           },

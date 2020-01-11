@@ -47,6 +47,7 @@ class MyHomePage extends StatelessWidget {
         Provider.of<Auth>(context, listen: false).isEmailVerified();
     return Scaffold(
         appBar: AppBar(
+          elevation: 0,
           title: Text('Welcome to Fire+'),
           actions: <Widget>[
             IconButton(
@@ -184,7 +185,11 @@ class MyHomePage extends StatelessWidget {
                       ],
                     ),
                   )
-                : LinearProgressIndicator();
+                : LinearProgressIndicator(
+                    backgroundColor: Theme.of(context).primaryColor,
+                    // valueColor: AlwaysStoppedAnimation<Color>(
+                    //     Theme.of(context).primaryColor),
+                  );
           },
         ));
   }

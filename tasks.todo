@@ -12,17 +12,20 @@
   ✔ Email Verification. @done(20-01-09 19:20)
 
 2. Firebase Notification Integration Kit:
-  ☐ Push notification. @est(1h)
+  ☐ Push notification. @est(1h) @critical 
 
-3. Admob Integration Kit:
+3. Admob Integration Kit:@critical 
   ☐ Flutter firebase Admob @est(1h)
 
-4. Firebase Chat Integration Kit:
-  ☐ Chat @est(3h)
+4. Firebase Chat Integration Kit:@critical 
+  ☐ Chat @est(3h) @today 
+
+5. User Profile:
+  ☐ Account view
+  ☐ Edit Account PRofile
+  ☐ Add bio/description
 
 ✔ Firestore & Firestorage Integration Kit @done(20-01-09 18:04)
 ☐ Firebase authentication for flutter web
-☐ Firebase integration in flutter web
 ☐ Flutter firebase dynamic links.
-
 ☐ analytics
