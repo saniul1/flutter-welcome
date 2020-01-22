@@ -147,7 +147,7 @@ class EnterOtp extends StatelessWidget {
                 ),
                 MyDivider(),
                 LongFlatButton(
-                  label: 'Didn\'t receive any OTP? Resend OTP',
+                  label: 'Didn\'t receive any OTP? Resend',
                   callback: _resendOtp,
                 )
               ],

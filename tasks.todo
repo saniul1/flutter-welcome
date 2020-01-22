@@ -21,11 +21,11 @@
   ☐ Chat @est(3h) @today 
 
 5. User Profile:
-  ☐ Account view
-  ☐ Edit Account PRofile
-  ☐ Add bio/description
+  ☐ Account view @today 
+  ☐ Edit Account Profile @today 
+  ☐ Add bio/description @today 
 
 ✔ Firestore & Firestorage Integration Kit @done(20-01-09 18:04)
-☐ Firebase authentication for flutter web
-☐ Flutter firebase dynamic links.
+☐ Firebase authentication for flutter web @low 
+☐ Flutter firebase dynamic links. 
 ☐ analytics

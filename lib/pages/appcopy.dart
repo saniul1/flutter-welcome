@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_fire_plus/pages/ChatScreen.dart';
+import 'package:flutter_fire_plus/pages/friend_list.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_fire_plus/pages/auth_screen.dart';
 import 'package:flutter_fire_plus/styles/colors.dart';
@@ -20,6 +22,9 @@ class _MyHomePageTestState extends State<MyHomePageTest> {
     'https://images.squarespace-cdn.com/content/v1/5c8eba949b7d157921bba3e4/1558254396295-BDGVZTP3I9BS9V7QN2XS/ke17ZwdGBToddI8pDm48kAGx3IFADtt9koaOuly55F57gQa3H78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCLfrh8O1z4YTzHvnKhyp6Da-NYroOW3ZGjoBKy3azqku80C789l0pTKqSDRwmMK43IUI3HojJX_iGOyvGz0VEAhzFdMwNTUP3iYIRpjRWHZRVGJwIQ0nA/The+Humans+Being+Project-Myanmar-Yangon-Part+II-22.jpg?format=2500w'
   ];
 
+  final isSelf = false;
+  final isFriend = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +38,7 @@ class _MyHomePageTestState extends State<MyHomePageTest> {
                 color: Theme.of(context).primaryColor,
                 image: DecorationImage(
                   alignment: Alignment(0, 0),
-                  image: NetworkImage(images[3]),
+                  image: NetworkImage(images[0]),
                   fit: BoxFit.cover,
                   colorFilter: ColorFilter.mode(
                     Theme.of(context).primaryColor.withAlpha(235),
@@ -72,19 +77,46 @@ class _MyHomePageTestState extends State<MyHomePageTest> {
             ),
             Row(
               children: <Widget>[
-                BoxButton(
-                  label: 'Friends',
-                  icon: Icons.people,
-                  callback: () {},
-                ),
+                isFriend
+                    ? BoxButton(
+                        label: 'Friends',
+                        icon: Icons.people,
+                        callback: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => FriendList(),
+                            ),
+                          );
+                        },
+                      )
+                    : BoxButton(
+                        label: 'Add Friend',
+                        icon: Icons.person_add,
+                        callback: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => FriendList(),
+                            ),
+                          );
+                        },
+                      ),
                 VerticalDivider(
                   width: 2,
                 ),
-                BoxButton(
-                  label: 'Edit',
-                  icon: Icons.edit,
-                  callback: () {},
-                ),
+                isSelf
+                    ? BoxButton(
+                        label: 'Edit',
+                        icon: Icons.edit,
+                        callback: () {},
+                      )
+                    : BoxButton(
+                        label: 'Chat',
+                        icon: Icons.chat,
+                        callback: () {
+                          Navigator.of(context).push(
+                              MaterialPageRoute(builder: (_) => ChatScreen()));
+                        },
+                      ),
                 VerticalDivider(
                   width: 2,
                 ),
