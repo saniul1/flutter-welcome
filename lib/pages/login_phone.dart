@@ -61,8 +61,8 @@ class _LoginPhoneState extends State<LoginPhone> {
       try {
         await Provider.of<Auth>(context, listen: false).verifyPhone(
           _phoneNumber,
-          onFailed: _onFailed,
           onSuccess: _onSuccess,
+          onFailed: _onFailed,
           onTimeout: _onTimeout,
         );
         Navigator.pop(context);
@@ -81,7 +81,7 @@ class _LoginPhoneState extends State<LoginPhone> {
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        title: Text('Login'),
+        title: Text('Enter Mobile Number'),
       ),
       body: SingleChildScrollView(
         child: Container(

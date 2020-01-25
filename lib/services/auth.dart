@@ -40,19 +40,34 @@ class Auth extends ChangeNotifier {
     String name,
     String phoneNumber,
   }) async {
-    DocumentReference ref = _db.collection('users').document(user.uid);
+    final DocumentReference ref = _db.collection('users').document(user.uid);
     final snapshot = await ref.get();
     final bool isNewUser = snapshot.data == null;
-    print('isNewUser: $isNewUser');
-    return ref.setData({
-      'uid': user.uid,
-      'email': user.email,
-      'photoURL': user.photoUrl,
-      'displayName': user.displayName == null ? name : user.displayName,
-      'phoneNumber': user.phoneNumber == null ? phoneNumber : user.phoneNumber,
-      if (isNewUser) 'createdOn': DateTime.now(),
-      'lastSeen': DateTime.now(),
-    }, merge: true);
+    if (!isNewUser)
+      return ref.updateData({
+        'lastSeen': FieldValue.arrayUnion(
+          [DateTime.now()],
+        )
+      });
+    else
+      return ref.setData({
+        'uid': user.uid,
+        'email': user.email,
+        'photoURL': user.photoUrl,
+        'displayName': user.displayName == null ? name : user.displayName,
+        'phoneNumber':
+            user.phoneNumber == null ? phoneNumber : user.phoneNumber,
+        'isPhoneVerified': user.phoneNumber != null ? true : false,
+        'createdOn': DateTime.now(),
+        'lastSeen': FieldValue.arrayUnion(
+          [DateTime.now()],
+        ),
+      }, merge: true);
+  }
+
+  Future<void> _updateSingleUserData(String property, data) {
+    final DocumentReference ref = _db.collection('users').document(_userId);
+    return ref.updateData({property: data});
   }
 
   Future<String> signIn(String email, String password) async {
@@ -85,6 +100,24 @@ class Auth extends ChangeNotifier {
     }
   }
 
+  Future<void> sendEmailVerification() async {
+    try {
+      FirebaseUser user = await _firebaseAuth.currentUser();
+      user.sendEmailVerification();
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<bool> isEmailVerified() async {
+    try {
+      FirebaseUser user = await _firebaseAuth.currentUser();
+      return user.isEmailVerified;
+    } catch (e) {
+      throw e;
+    }
+  }
+
   Future<void> verifyPhone(
     String phoneNumber, {
     PhoneCodeSent onSuccess,
@@ -110,16 +143,23 @@ class Auth extends ChangeNotifier {
     }
   }
 
-  Future<String> verifyOTP({String id, String otp, String phoneNo}) async {
+  Future<String> verifyOTP(
+      {String id, String otp, String phoneNo, bool isExistingUser}) async {
     try {
       final AuthCredential _authCredential =
           PhoneAuthProvider.getCredential(verificationId: id, smsCode: otp);
-      final AuthResult result =
-          await _firebaseAuth.signInWithCredential(_authCredential);
-      FirebaseUser user = result.user;
-      await _updateUserData(user, phoneNumber: phoneNo);
-      _userId = user.uid;
-      return user.uid;
+      if (!isExistingUser) {
+        final AuthResult result =
+            await _firebaseAuth.signInWithCredential(_authCredential);
+        final FirebaseUser user = result.user;
+        await _updateUserData(user, phoneNumber: phoneNo);
+        _userId = user.uid;
+        return user.uid;
+      } else {
+        await linkAccount(_authCredential);
+        await _updateSingleUserData('isPhoneVerified', true);
+        return _userId;
+      }
     } catch (error) {
       print(error.code);
       print(error.message);
@@ -173,6 +213,18 @@ class Auth extends ChangeNotifier {
     return user;
   }
 
+  Future<void> linkAccount(AuthCredential authCredential) {
+    getCurrentUser().then((user) async {
+      try {
+        await user.linkWithCredential(authCredential);
+      } catch (e) {
+        print(e);
+        throw e;
+      }
+    });
+    return Future.value();
+  }
+
   Future<void> signOut() async {
     try {
       await _firebaseAuth.signOut();
@@ -185,24 +237,6 @@ class Auth extends ChangeNotifier {
   Future<void> resetPassword(String email) async {
     try {
       await _firebaseAuth.sendPasswordResetEmail(email: email);
-    } catch (e) {
-      throw e;
-    }
-  }
-
-  Future<void> sendEmailVerification() async {
-    try {
-      FirebaseUser user = await _firebaseAuth.currentUser();
-      user.sendEmailVerification();
-    } catch (e) {
-      throw e;
-    }
-  }
-
-  Future<bool> isEmailVerified() async {
-    try {
-      FirebaseUser user = await _firebaseAuth.currentUser();
-      return user.isEmailVerified;
     } catch (e) {
       throw e;
     }

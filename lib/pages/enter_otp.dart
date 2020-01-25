@@ -12,10 +12,11 @@ import 'package:flutter_fire_plus/services/auth.dart';
 class EnterOtp extends StatelessWidget {
   static const routeName = '/enter-otp';
 
-  EnterOtp({this.id, this.phoneNumber});
+  EnterOtp({this.id, this.phoneNumber, this.isExistingUser = false});
 
   final String id;
   final String phoneNumber;
+  final bool isExistingUser;
 
   final GlobalKey<FormState> _formKey = GlobalKey();
   final Map<String, String> _authData = {'id': '', 'otp': ''};
@@ -36,6 +37,7 @@ class EnterOtp extends StatelessWidget {
           id: _authData['id'],
           otp: _authData['otp'],
           phoneNo: phoneNumber,
+          isExistingUser: isExistingUser,
         );
         print('Signed_in_phone_user: $_userId');
         Navigator.pop(context);
@@ -53,7 +55,7 @@ class EnterOtp extends StatelessWidget {
         Navigator.pop(context);
         showErrorDialog(context, errorMessage);
       } catch (error) {
-        print(error);
+        print('Error: $error');
         const errorMessage =
             'Could not authenticate you. Please try again later.';
         Navigator.pop(context);
@@ -113,7 +115,7 @@ class EnterOtp extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        title: Text('Login'),
+        title: Text('Verify'),
       ),
       body: SingleChildScrollView(
         child: Container(

@@ -60,19 +60,15 @@ class MyApp extends StatelessWidget {
             primaryColor: MyColors.secondaryColor,
             accentColor: MyColors.grey,
           ),
-          home: true
-              ? MyHomePageTest()
-              : FutureBuilder(
-                  future: auth.checkAuth(),
-                  builder: (context, authResultSnapshot) {
-                    return authResultSnapshot.connectionState ==
-                            ConnectionState.waiting
-                        ? SplashScreen()
-                        : authResultSnapshot.data == true
-                            ? MyHomePage()
-                            : Welcome();
-                  },
-                ),
+          home: FutureBuilder(
+            future: auth.checkAuth(),
+            builder: (context, authResultSnapshot) {
+              return authResultSnapshot.connectionState ==
+                      ConnectionState.waiting
+                  ? SplashScreen()
+                  : authResultSnapshot.data == true ? MyHomePage() : Welcome();
+            },
+          ),
           onGenerateRoute: (settings) {
             return pages[settings.name](settings);
           },
