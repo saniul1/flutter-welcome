@@ -5,7 +5,7 @@ import 'package:flutter_fire_plus/widgets/input_field.dart';
 import 'package:flutter_fire_plus/utils/helper.dart';
 import 'package:flutter_fire_plus/widgets/long_flat_button.dart';
 import 'package:flutter_fire_plus/models/http_exception.dart';
-import 'package:flutter_fire_plus/pages/app.dart';
+import 'package:flutter_fire_plus/pages/profile.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_fire_plus/services/auth.dart';
 
@@ -43,7 +43,7 @@ class EnterOtp extends StatelessWidget {
         Navigator.pop(context);
         if (_userId != null && _userId.length > 0) {
           Navigator.of(context).pushNamedAndRemoveUntil(
-              MyHomePage.routeName, (Route<dynamic> route) => false);
+              ProfilePage.routeName, (Route<dynamic> route) => false);
         }
       } on HttpException catch (error) {
         var errorMessage = 'Authentication failed';

@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_fire_plus/pages/ChatScreen.dart';
 import 'package:flutter_fire_plus/pages/appcopy.dart';
-import 'package:flutter_fire_plus/pages/app.dart';
+import 'package:flutter_fire_plus/pages/profile.dart';
 import 'package:flutter_fire_plus/pages/auth_screen.dart';
 import 'package:flutter_fire_plus/pages/enter_otp.dart';
 import 'package:flutter_fire_plus/pages/login.dart';
 import 'package:flutter_fire_plus/pages/login_phone.dart';
 import 'package:flutter_fire_plus/pages/sign_up.dart';
 import 'package:flutter_fire_plus/pages/splash_screen.dart';
-import 'package:flutter_fire_plus/services/auth.dart';
 import 'package:flutter_fire_plus/styles/colors.dart';
+import 'package:flutter_fire_plus/services/auth.dart';
+import 'package:flutter_fire_plus/services/storage.dart';
 import 'package:provider/provider.dart';
 
 void main() => runApp(MyApp());
@@ -20,8 +21,8 @@ class MyApp extends StatelessWidget {
           builder: (context) => Welcome(),
           settings: settings,
         ),
-    MyHomePage.routeName: (settings) => MaterialPageRoute(
-          builder: (context) => MyHomePage(),
+    ProfilePage.routeName: (settings) => MaterialPageRoute(
+          builder: (context) => ProfilePage(),
           settings: settings,
         ),
     SignUpPage.routeName: (settings) => MaterialPageRoute(
@@ -51,7 +52,10 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider.value(
           value: Auth(),
-        )
+        ),
+        ChangeNotifierProvider.value(
+          value: Storage(),
+        ),
       ],
       child: Consumer<Auth>(
         builder: (context, auth, _) => MaterialApp(
@@ -66,7 +70,7 @@ class MyApp extends StatelessWidget {
               return authResultSnapshot.connectionState ==
                       ConnectionState.waiting
                   ? SplashScreen()
-                  : authResultSnapshot.data == true ? MyHomePage() : Welcome();
+                  : authResultSnapshot.data == true ? ProfilePage() : Welcome();
             },
           ),
           onGenerateRoute: (settings) {

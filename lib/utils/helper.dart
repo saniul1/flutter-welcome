@@ -7,7 +7,12 @@ SizedBox buildSizedBox({val = 16}) {
   );
 }
 
-Future buildLoadingDialog(BuildContext context) {
+Divider buildDivider({val = 0.0, color = Colors.grey}) {
+  return Divider(height: val, color: color);
+}
+
+Future buildLoadingDialog(BuildContext context,
+    {String msg = 'Authenticating...'}) {
   // Future.delayed(Duration(seconds: 10)).then((_) {
   //   Navigator.pop(context);
   // });
@@ -31,7 +36,7 @@ Future buildLoadingDialog(BuildContext context) {
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
-                  'Authenticating...',
+                  msg,
                   style: TextStyle(color: Colors.white),
                 ),
               )

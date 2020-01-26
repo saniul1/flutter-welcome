@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_fire_plus/pages/app.dart';
+import 'package:flutter_fire_plus/pages/profile.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_fire_plus/services/auth.dart';
 import 'package:flutter_fire_plus/pages/login.dart';
@@ -59,7 +59,7 @@ class Welcome extends StatelessWidget {
                     Navigator.pop(context);
                     if (_userId != null && _userId.length > 0) {
                       Navigator.of(context)
-                          .pushReplacementNamed(MyHomePage.routeName);
+                          .pushReplacementNamed(ProfilePage.routeName);
                     }
                   } catch (e) {
                     Navigator.pop(context);
@@ -81,7 +81,7 @@ class Welcome extends StatelessWidget {
                     Navigator.pop(context);
                     if (_userId != null && _userId.length > 0) {
                       Navigator.of(context)
-                          .pushReplacementNamed(MyHomePage.routeName);
+                          .pushReplacementNamed(ProfilePage.routeName);
                     }
                   } catch (e) {
                     Navigator.pop(context);
