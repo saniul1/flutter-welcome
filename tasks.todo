@@ -26,6 +26,10 @@
   ✔ Edit Account Profile @today @done(20-01-27 01:09)
   ✔ Add bio/description @today @done(20-01-27 01:09)
 
+6. Friends:
+  ✔ Add Friend @done(20-01-28 01:54)
+  ✔ Friend list @done(20-01-28 01:54)
+
 ✔ Firestore & Firestorage Integration Kit @done(20-01-27 18:04)
 ☐ Firebase authentication for flutter web @low 
 ☐ Flutter firebase dynamic links. 

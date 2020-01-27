@@ -48,7 +48,7 @@ class FriendList extends StatelessWidget {
                 images: images,
                 people: friends,
                 category: '${currentUser.name}\'s Friends',
-                isFriend: true,
+                isFriendList: true,
               ),
               PeopleList(
                 images: images,
@@ -70,13 +70,13 @@ class PeopleList extends StatelessWidget {
       @required this.images,
       this.category,
       this.people,
-      this.isFriend = false})
+      this.isFriendList = false})
       : super(key: key);
 
   final List<String> images;
   final String category;
   final List<User> people;
-  final bool isFriend;
+  final bool isFriendList;
 
   @override
   Widget build(BuildContext context) {
@@ -114,19 +114,28 @@ class PeopleList extends StatelessWidget {
                   backgroundImage: NetworkImage(images[0]),
                 ),
                 title: Text(user.name),
-                trailing: isFriend
-                    ? buildFriendCount(
-                        user.friends != null
-                            ? user.friends.length.toString()
-                            : '0',
-                      )
-                    : IconButton(
-                        icon: Icon(Icons.person_add),
-                        onPressed: () async {
-                          await Provider.of<UserData>(context, listen: false)
-                              .addToFriendList(user.id);
-                        },
-                      ),
+                trailing: FutureBuilder(
+                    future: Provider.of<UserData>(context, listen: false)
+                        .checkIfFriendFromServer(user.id),
+                    builder: (context, snapshot) {
+                      final isFriend = snapshot.data;
+                      return isFriend == null
+                          ? SizedBox()
+                          : isFriendList || isFriend
+                              ? buildFriendCount(
+                                  user.friends != null
+                                      ? user.friends.length.toString()
+                                      : '0',
+                                )
+                              : IconButton(
+                                  icon: Icon(Icons.person_add),
+                                  onPressed: () async {
+                                    await Provider.of<UserData>(context,
+                                            listen: false)
+                                        .addToFriendList(user.id);
+                                  },
+                                );
+                    }),
               );
             }),
             if (people.length == 0)

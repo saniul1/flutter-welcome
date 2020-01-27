@@ -35,7 +35,7 @@ class UserData with ChangeNotifier {
     return user;
   }
 
-  Future<void> checkFriend(String id) async {
+  Future<bool> checkIfFriendFromServer(String id) async {
     final user = await getCurrentUser();
     final userData = await getUserData(user.uid);
     var isFriend = false;
@@ -44,7 +44,11 @@ class UserData with ChangeNotifier {
         if (friendID == id) isFriend = true;
       });
     }
-    _isFriend = isFriend;
+    return isFriend;
+  }
+
+  Future<void> checkFriend(String id) async {
+    _isFriend = await checkIfFriendFromServer(id);
     notifyListeners();
     return;
   }
