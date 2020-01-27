@@ -12,7 +12,7 @@ enum AuthStatus {
   LOGGED_IN,
 }
 
-class Auth extends ChangeNotifier {
+class Auth with ChangeNotifier {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FacebookLogin _facebookLogIn = FacebookLogin();

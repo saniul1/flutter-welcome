@@ -13,17 +13,16 @@ class Header extends StatelessWidget {
   const Header({
     Key key,
     @required this.size,
-    @required this.isFriend,
     @required this.isSelf,
   });
 
-  final bool isFriend;
   final bool isSelf;
   final double size;
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserData>(context).user;
+    final isFriend = Provider.of<UserData>(context).isFriend;
     return Container(
       height: size,
       child: Column(
@@ -84,7 +83,9 @@ class Header extends StatelessWidget {
                       callback: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (_) => FriendList(),
+                            builder: (_) => FriendList(
+                              id: user.id,
+                            ),
                           ),
                         );
                       },
@@ -92,12 +93,11 @@ class Header extends StatelessWidget {
                   : BoxButton(
                       label: 'Add Friend',
                       icon: Icons.person_add,
-                      callback: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => FriendList(),
-                          ),
-                        );
+                      callback: () async {
+                        await Provider.of<UserData>(context, listen: false)
+                            .addToFriendList(user.id);
+                        Provider.of<UserData>(context, listen: false)
+                            .checkFriend(user.id);
                       },
                     ),
               VerticalDivider(

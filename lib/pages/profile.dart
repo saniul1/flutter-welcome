@@ -24,17 +24,18 @@ class ProfilePage extends StatefulWidget {
   _ProfilePageState createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
-  var _isSelf;
-  final isFriend = false;
-
+class _ProfilePageState extends State<ProfilePage> with WidgetsBindingObserver {
+  var isSelf;
+  var isFriend = false;
   var _isLoading = false;
+  bool isBackButtonActivated = false;
 
   @override
   void initState() {
+    WidgetsBinding.instance.addObserver(this);
     _isLoading = true;
     if (widget.id == null) {
-      _isSelf = true;
+      isSelf = true;
       Provider.of<UserData>(context, listen: false)
           .fetchAndSetUserData()
           .then((_) {
@@ -43,21 +44,41 @@ class _ProfilePageState extends State<ProfilePage> {
         });
       });
     } else {
-      _isSelf = false;
+      isSelf = Provider.of<Auth>(context, listen: false).userId == widget.id;
       Provider.of<UserData>(context, listen: false)
           .getUserData(widget.id)
           .then((user) {
         Provider.of<UserData>(context, listen: false)
-            .setUserData(user)
-            .then((_) {
-          setState(() {
-            _isLoading = false;
+            .checkFriend(widget.id)
+            .then((value) {
+          Provider.of<UserData>(context, listen: false)
+              .setUserData(user)
+              .then((_) {
+            setState(() {
+              _isLoading = false;
+            });
           });
         });
       });
     }
 
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  didPopRoute() {
+    bool override;
+    if (isBackButtonActivated)
+      override = false;
+    else
+      override = true;
+    return new Future<bool>.value(override);
   }
 
   @override
@@ -87,8 +108,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: <Widget>[
                     Header(
                       size: headerSize,
-                      isFriend: isFriend,
-                      isSelf: _isSelf,
+                      isSelf: isSelf,
                     ),
                     Container(
                       height: MediaQuery.of(context).size.height - headerSize,
@@ -122,11 +142,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                   buildBodyRowDivider(),
                                   EmailRow(
-                                    isSelf: _isSelf,
+                                    isSelf: isSelf,
                                   ),
                                   buildBodyRowDivider(),
                                   PhoneRow(
-                                    isSelf: _isSelf,
+                                    isSelf: isSelf,
                                   ),
                                   buildBodyRowDivider(),
                                   BodyRowItem(
@@ -144,7 +164,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                 ],
                               ),
-                              if (user.email != null && _isSelf)
+                              if (user.email != null && isSelf)
                                 RaisedButton(
                                   materialTapTargetSize:
                                       MaterialTapTargetSize.shrinkWrap,
@@ -171,7 +191,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   },
                                   child: Text('Forgot Password? Reset'),
                                 )
-                              else if (_isSelf)
+                              else if (isSelf)
                                 RaisedButton(
                                   onPressed: () => addEmail(context),
                                   child: Text('No Email found! Add'),
