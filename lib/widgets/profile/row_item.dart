@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_fire_plus/styles/colors.dart';
 
-class BodyRowBar extends StatelessWidget {
-  const BodyRowBar({
+class BodyRowItem extends StatelessWidget {
+  const BodyRowItem({
     @required this.text,
     this.suffix,
     Key key,

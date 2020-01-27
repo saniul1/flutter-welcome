@@ -7,15 +7,8 @@ SizedBox buildSizedBox({val = 16}) {
   );
 }
 
-Divider buildDivider({val = 0.0, color = Colors.grey}) {
-  return Divider(height: val, color: color);
-}
-
 Future buildLoadingDialog(BuildContext context,
     {String msg = 'Authenticating...'}) {
-  // Future.delayed(Duration(seconds: 10)).then((_) {
-  //   Navigator.pop(context);
-  // });
   return showDialog(
     context: context,
     barrierDismissible: false,

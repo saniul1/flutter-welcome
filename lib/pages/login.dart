@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_fire_plus/pages/profile.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_fire_plus/services/auth.dart';
+import 'package:flutter_fire_plus/models/http_exception.dart';
+import 'package:flutter_fire_plus/utils/helper.dart';
+
+import 'package:flutter_fire_plus/pages/profile.dart';
 import 'package:flutter_fire_plus/pages/sign_up.dart';
+
 import 'package:flutter_fire_plus/widgets/divider.dart';
 import 'package:flutter_fire_plus/widgets/long_button.dart';
 import 'package:flutter_fire_plus/widgets/input_field.dart';
-import 'package:flutter_fire_plus/utils/helper.dart';
 import 'package:flutter_fire_plus/widgets/long_flat_button.dart';
-import 'package:flutter_fire_plus/models/http_exception.dart';
 
 class Login extends StatelessWidget {
   static const routeName = '/login';

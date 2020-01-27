@@ -1,17 +1,15 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_fire_plus/utils/helper.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter_fire_plus/services/storage.dart';
-import 'package:flutter_fire_plus/services/auth.dart';
-import 'package:flutter_fire_plus/models/user.dart';
-import 'package:flutter_fire_plus/styles/colors.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+
+import 'package:flutter_fire_plus/utils/helper.dart';
+import 'package:flutter_fire_plus/services/storage.dart';
+import 'package:flutter_fire_plus/services/user_data.dart';
+import 'package:flutter_fire_plus/services/auth.dart';
+import 'package:flutter_fire_plus/styles/colors.dart';
 
 class EditProfilePage extends StatefulWidget {
-  EditProfilePage({@required this.user});
-  final User user;
-
   @override
   _EditProfilePageState createState() => _EditProfilePageState();
 }
@@ -34,6 +32,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   Widget build(BuildContext context) {
     final _id = Provider.of<Auth>(context, listen: false).userId;
+    final user = Provider.of<UserData>(context).user;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -46,11 +45,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
               height: 250,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: widget.user.imageURL == null && _imageFile == null
+                  image: user.imageURL == null && _imageFile == null
                       ? AssetImage('assets/images/img_not_available.jpeg')
                       : _imageFile != null
                           ? FileImage(_imageFile)
-                          : NetworkImage(widget.user.imageURL),
+                          : NetworkImage(user.imageURL),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -79,8 +78,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
                       decoration: InputDecoration(
+                        hintText: 'Profile Name',
                         helperText: 'Change Profile Name',
-                        labelText: widget.user.name,
+                        labelText: user.name,
                         border: OutlineInputBorder(
                           borderSide: BorderSide(
                             color: MyColors.secondaryColor,
@@ -96,8 +96,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
                       maxLines: 4,
+                      controller: TextEditingController(text: user.bio),
                       decoration: InputDecoration(
-                        hintText: widget.user.bio ?? 'no bio.',
+                        hintText: user.bio ?? 'no bio.',
                         helperText: 'Change bio',
                         border: OutlineInputBorder(
                           borderSide: BorderSide(
@@ -132,13 +133,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         }
                         if (name.length == 0) name = null;
                         if (bio.length == 0) bio = null;
-                        await widget.user.reference.updateData({
+                        await user.reference.updateData({
                           if (name != null) 'displayName': name,
                           if (url != null) 'photoURL': url,
                           if (bio != null) 'bio': bio,
                         });
                         print('User data updated!');
                         Navigator.of(context).pop();
+                        await Provider.of<UserData>(context, listen: false)
+                            .fetchAndSetUserData();
                         Navigator.of(context).pop();
                       },
                     ),

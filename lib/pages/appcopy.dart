@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_fire_plus/pages/ChatScreen.dart';
-import 'package:flutter_fire_plus/pages/friend_list.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_fire_plus/pages/auth_screen.dart';
-import 'package:flutter_fire_plus/styles/colors.dart';
-import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_fire_plus/services/auth.dart';
+import 'package:flutter_fire_plus/styles/colors.dart';
+
+import 'package:flutter_fire_plus/pages/chat_screen.dart';
+import 'package:flutter_fire_plus/pages/friend_list.dart';
 
 class MyHomePageTest extends StatefulWidget {
   static const routeName = '/home-page-test';
@@ -127,7 +125,7 @@ class _MyHomePageTestState extends State<MyHomePageTest> {
                 ),
               ],
             ),
-            buildDivider(),
+            buildBodyRowDivider(),
             Container(
               color: MyColors.lightGrey,
               constraints: BoxConstraints(minHeight: 100),
@@ -139,7 +137,7 @@ class _MyHomePageTestState extends State<MyHomePageTest> {
                 ),
               ),
             ),
-            buildDivider(),
+            buildBodyRowDivider(),
             BodyRowBar(
               text: 'maxdoe@mail.com',
               suffix: true
@@ -158,7 +156,7 @@ class _MyHomePageTestState extends State<MyHomePageTest> {
                       ],
                     ),
             ),
-            buildDivider(),
+            buildBodyRowDivider(),
             BodyRowBar(
               // text: '+919876543210',
               text: '',
@@ -168,13 +166,13 @@ class _MyHomePageTestState extends State<MyHomePageTest> {
                 onPressed: () {},
               ),
             ),
-            buildDivider(),
+            buildBodyRowDivider(),
             BodyRowBar(
               text: 'Created On',
               suffix: Text(
                   DateFormat('MM/dd/yyyy - hh:mm a').format(DateTime.now())),
             ),
-            buildDivider(),
+            buildBodyRowDivider(),
             BodyRowBar(
               text: 'Last Visited',
               suffix: Text(
@@ -225,7 +223,7 @@ class BodyRowBar extends StatelessWidget {
   }
 }
 
-Divider buildDivider({val = 0.0}) {
+Divider buildBodyRowDivider({val = 0.0}) {
   return Divider(
     height: val,
     color: MyColors.grey,
@@ -273,60 +271,59 @@ class BoxButton extends StatelessWidget {
   }
 }
 
-//   Widget _buildBody(BuildContext context) {
-//     return StreamBuilder<QuerySnapshot>(
-//       stream: Firestore.instance.collection('baby').snapshots(),
-//       builder: (context, snapshot) {
-//         if (!snapshot.hasData) return LinearProgressIndicator();
+Widget _buildBody(BuildContext context) {
+  return StreamBuilder<QuerySnapshot>(
+    stream: Firestore.instance.collection('baby').snapshots(),
+    builder: (context, snapshot) {
+      if (!snapshot.hasData) return LinearProgressIndicator();
 
-//         return _buildList(context, snapshot.data.documents);
-//       },
-//     );
-//   }
+      return _buildList(context, snapshot.data.documents);
+    },
+  );
+}
 
-//   Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
-//     return ListView(
-//       padding: const EdgeInsets.only(top: 20.0),
-//       children: snapshot.map((data) => _buildListItem(context, data)).toList(),
-//     );
-//   }
+Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
+  return ListView(
+    padding: const EdgeInsets.only(top: 20.0),
+    children: snapshot.map((data) => _buildListItem(context, data)).toList(),
+  );
+}
 
-//   Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
-//     final record = Record.fromSnapshot(data);
+Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
+  final record = Record.fromSnapshot(data);
 
-//     return Padding(
-//       key: ValueKey(record.name),
-//       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-//       child: Container(
-//         decoration: BoxDecoration(
-//           border: Border.all(color: Colors.grey),
-//           borderRadius: BorderRadius.circular(5.0),
-//         ),
-//         child: ListTile(
-//           title: Text(record.name),
-//           trailing: Text(record.votes.toString()),
-//           onTap: () =>
-//               record.reference.updateData({'votes': FieldValue.increment(1)}),
-//         ),
-//       ),
-//     );
-//   }
-// }
+  return Padding(
+    key: ValueKey(record.name),
+    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+    child: Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey),
+        borderRadius: BorderRadius.circular(5.0),
+      ),
+      child: ListTile(
+        title: Text(record.name),
+        trailing: Text(record.votes.toString()),
+        onTap: () =>
+            record.reference.updateData({'votes': FieldValue.increment(1)}),
+      ),
+    ),
+  );
+}
 
-// class Record {
-//   final String name;
-//   final int votes;
-//   final DocumentReference reference;
+class Record {
+  final String name;
+  final int votes;
+  final DocumentReference reference;
 
-//   Record.fromMap(Map<String, dynamic> map, {this.reference})
-//       : assert(map['name'] != null),
-//         assert(map['votes'] != null),
-//         name = map['name'],
-//         votes = map['votes'];
+  Record.fromMap(Map<String, dynamic> map, {this.reference})
+      : assert(map['name'] != null),
+        assert(map['votes'] != null),
+        name = map['name'],
+        votes = map['votes'];
 
-//   Record.fromSnapshot(DocumentSnapshot snapshot)
-//       : this.fromMap(snapshot.data, reference: snapshot.reference);
+  Record.fromSnapshot(DocumentSnapshot snapshot)
+      : this.fromMap(snapshot.data, reference: snapshot.reference);
 
-//   @override
-//   String toString() => "Record<$name:$votes>";
-// }
+  @override
+  String toString() => "Record<$name:$votes>";
+}
