@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_fire_plus/pages/auth_screen.dart';
 import 'package:flutter_fire_plus/services/user_data.dart';
@@ -6,6 +7,34 @@ import 'package:flutter_fire_plus/services/auth.dart';
 
 Divider buildBodyRowDivider({val = 0.0, color = Colors.grey}) {
   return Divider(height: val, color: color);
+}
+
+Future<void> confirmExit(BuildContext context) async {
+  await showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text('Are you sure?'),
+      content: Text('Do you want to exit the app.'),
+      actions: <Widget>[
+        FlatButton(
+          child: Text('yes'),
+          onPressed: () {
+            Navigator.of(context).pop(true);
+          },
+        ),
+        FlatButton(
+          child: Text('No'),
+          onPressed: () {
+            Navigator.of(context).pop(false);
+          },
+        )
+      ],
+    ),
+  ).then((isConfirmed) async {
+    if (isConfirmed) {
+      SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+    }
+  });
 }
 
 Future<void> confirmLogout(BuildContext context) async {
