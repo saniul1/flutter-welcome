@@ -117,10 +117,13 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
       body: WillPopScope(
         onWillPop: () {
-          setState(() {
-            isShowSticker = false;
-            isChooseAttach = false;
-          });
+          if (isShowSticker || isChooseAttach)
+            setState(() {
+              isShowSticker = false;
+              isChooseAttach = false;
+            });
+          else
+            Navigator.of(context).pop();
           return Future.value(false);
         },
         child: Stack(

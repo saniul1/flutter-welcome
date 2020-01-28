@@ -35,8 +35,9 @@ class Header extends StatelessWidget {
                 color: Theme.of(context).primaryColor,
                 image: DecorationImage(
                   alignment: Alignment(0, 0),
-                  image: NetworkImage(user.imageURL ??
-                      'https://images.squarespace-cdn.com/content/v1/5c8eba949b7d157921bba3e4/1558254396295-BDGVZTP3I9BS9V7QN2XS/ke17ZwdGBToddI8pDm48kAGx3IFADtt9koaOuly55F57gQa3H78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCLfrh8O1z4YTzHvnKhyp6Da-NYroOW3ZGjoBKy3azqku80C789l0pTKqSDRwmMK43IUI3HojJX_iGOyvGz0VEAhzFdMwNTUP3iYIRpjRWHZRVGJwIQ0nA/The+Humans+Being+Project-Myanmar-Yangon-Part+II-22.jpg?format=2500w'),
+                  image: user.imageURL == null
+                      ? AssetImage('assets/images/avatar1.png')
+                      : NetworkImage(user.imageURL),
                   fit: BoxFit.cover,
                   colorFilter: ColorFilter.mode(
                     Theme.of(context).primaryColor.withAlpha(235),
@@ -57,8 +58,9 @@ class Header extends StatelessWidget {
                       ),
                       child: CircleAvatar(
                         radius: 60,
-                        backgroundImage: NetworkImage(user.imageURL ??
-                            'https://images.squarespace-cdn.com/content/v1/5c8eba949b7d157921bba3e4/1558254396295-BDGVZTP3I9BS9V7QN2XS/ke17ZwdGBToddI8pDm48kAGx3IFADtt9koaOuly55F57gQa3H78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCLfrh8O1z4YTzHvnKhyp6Da-NYroOW3ZGjoBKy3azqku80C789l0pTKqSDRwmMK43IUI3HojJX_iGOyvGz0VEAhzFdMwNTUP3iYIRpjRWHZRVGJwIQ0nA/The+Humans+Being+Project-Myanmar-Yangon-Part+II-22.jpg?format=2500w'),
+                        backgroundImage: user.imageURL == null
+                            ? AssetImage('assets/images/avatar1.png')
+                            : NetworkImage(user.imageURL),
                         backgroundColor: Colors.grey[200],
                       ),
                     ),
