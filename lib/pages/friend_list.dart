@@ -48,7 +48,6 @@ class FriendList extends StatelessWidget {
                 images: images,
                 people: friends,
                 category: '${currentUser.name}\'s Friends',
-                isFriendList: true,
               ),
               PeopleList(
                 images: images,
@@ -65,21 +64,20 @@ class FriendList extends StatelessWidget {
 }
 
 class PeopleList extends StatelessWidget {
-  const PeopleList(
-      {Key key,
-      @required this.images,
-      this.category,
-      this.people,
-      this.isFriendList = false})
-      : super(key: key);
+  const PeopleList({
+    Key key,
+    @required this.images,
+    this.category,
+    this.people,
+  }) : super(key: key);
 
   final List<String> images;
   final String category;
   final List<User> people;
-  final bool isFriendList;
 
   @override
   Widget build(BuildContext context) {
+    final _id = Provider.of<Auth>(context).userId;
     return SingleChildScrollView(
       child: Container(
         child: Column(
@@ -121,7 +119,7 @@ class PeopleList extends StatelessWidget {
                       final isFriend = snapshot.data;
                       return isFriend == null
                           ? SizedBox()
-                          : isFriendList || isFriend
+                          : isFriend || user.id == _id
                               ? buildFriendCount(
                                   user.friends != null
                                       ? user.friends.length.toString()
