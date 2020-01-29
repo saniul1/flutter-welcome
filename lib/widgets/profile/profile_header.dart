@@ -98,6 +98,7 @@ class Header extends StatelessWidget {
                       callback: () async {
                         await Provider.of<UserData>(context, listen: false)
                             .addToFriendList(user.id);
+                        showFriendConfirmation(context, user.name);
                         Provider.of<UserData>(context, listen: false)
                             .checkFriend(user.id);
                       },

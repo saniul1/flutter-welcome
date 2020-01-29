@@ -4,6 +4,7 @@ import 'package:flutter_fire_plus/services/auth.dart';
 import 'package:flutter_fire_plus/services/user_data.dart';
 import 'package:flutter_fire_plus/models/user.dart';
 
+import 'package:flutter_fire_plus/utils/profile_helper.dart';
 import 'package:flutter_fire_plus/styles/colors.dart';
 import 'package:flutter_fire_plus/pages/profile.dart';
 
@@ -76,6 +77,7 @@ class PeopleList extends StatelessWidget {
                                     await Provider.of<UserData>(context,
                                             listen: false)
                                         .addToFriendList(user.id);
+                                    showFriendConfirmation(context, user.name);
                                   },
                                 );
                     }),

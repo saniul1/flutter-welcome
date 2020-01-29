@@ -130,3 +130,15 @@ Future<void> addEmail(BuildContext context) async {
     }
   });
 }
+
+void showFriendConfirmation(BuildContext context, String name) {
+  Scaffold.of(context).showSnackBar(
+    SnackBar(
+      content: Text('$name and you are friends'),
+      action: SnackBarAction(
+        label: 'Dismiss',
+        onPressed: () {},
+      ),
+    ),
+  );
+}
