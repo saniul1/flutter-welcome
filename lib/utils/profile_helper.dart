@@ -120,7 +120,7 @@ Future<void> addEmail(BuildContext context) async {
     if (isConfirmed) {
       try {
         print('add Email- $_email');
-        final user = Provider.of<UserData>(context).user;
+        final user = Provider.of<UserData>(context).currentUser;
         await user.reference.updateData({'email': _email});
         await Provider.of<UserData>(context, listen: false)
             .fetchAndSetUserData();

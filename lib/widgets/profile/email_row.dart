@@ -12,7 +12,7 @@ class EmailRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<UserData>(context).user;
+    final user = Provider.of<UserData>(context).currentUser;
     final Future<bool> isEmailVerified =
         Provider.of<Auth>(context, listen: false).isEmailVerified();
 

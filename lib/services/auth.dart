@@ -25,6 +25,11 @@ class Auth with ChangeNotifier {
     return _userId;
   }
 
+  static Future<FirebaseUser> getCurrentUser() async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    return user;
+  }
+
   Future<bool> checkAuth() async {
     return await getCurrentUser().then((user) {
       _authStatus =
@@ -206,11 +211,6 @@ class Auth with ChangeNotifier {
       print(error.message);
       throw HttpException(error.code, error.message);
     }
-  }
-
-  Future<FirebaseUser> getCurrentUser() async {
-    FirebaseUser user = await _firebaseAuth.currentUser();
-    return user;
   }
 
   Future<void> linkAccount(AuthCredential authCredential) {

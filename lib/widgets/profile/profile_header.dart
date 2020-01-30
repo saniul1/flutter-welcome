@@ -1,4 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_fire_plus/services/chats.dart';
+import 'package:flutter_fire_plus/utils/helper.dart';
 import 'package:provider/provider.dart';
 
 import 'package:flutter_fire_plus/services/user_data.dart';
@@ -21,7 +24,7 @@ class Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<UserData>(context).user;
+    final user = Provider.of<UserData>(context).currentUser;
     final isFriend = Provider.of<UserData>(context).isFriend;
     return Container(
       height: size,
@@ -37,7 +40,7 @@ class Header extends StatelessWidget {
                   alignment: Alignment(0, 0),
                   image: user.imageURL == null
                       ? AssetImage('assets/images/avatar1.png')
-                      : NetworkImage(user.imageURL),
+                      : CachedNetworkImageProvider(user.imageURL),
                   fit: BoxFit.cover,
                   colorFilter: ColorFilter.mode(
                     Theme.of(context).primaryColor.withAlpha(235),
@@ -60,7 +63,7 @@ class Header extends StatelessWidget {
                         radius: 60,
                         backgroundImage: user.imageURL == null
                             ? AssetImage('assets/images/avatar1.png')
-                            : NetworkImage(user.imageURL),
+                            : CachedNetworkImageProvider(user.imageURL),
                         backgroundColor: Colors.grey[200],
                       ),
                     ),
@@ -115,7 +118,11 @@ class Header extends StatelessWidget {
                   : BoxButton(
                       label: 'Chat',
                       icon: Icons.chat,
-                      callback: () {
+                      callback: () async {
+                        buildLoadingDialog(context, msg: "Please wait...");
+                        await Provider.of<Chats>(context, listen: false)
+                            .startChatroomForUser(user);
+                        Navigator.of(context).pop();
                         Navigator.of(context).push(
                           MaterialPageRoute(builder: (_) => ChatScreen()),
                         );

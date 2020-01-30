@@ -8,6 +8,24 @@
       "name": "Flutter",
       "request": "launch",
       "type": "dart"
-    }
-  ]
+    },
+		{
+			"name": "Device",
+			"request": "launch",
+			"type": "dart",
+			"deviceId": "SM J210F"
+		},
+		{
+			"name": "Emulator",
+			"request": "launch",
+			"type": "dart",
+			"deviceId": "android"
+		},
+	],
+	"compounds": [
+		{
+			"name": "All Devices",
+			"configurations": ["Device", "Emulator"],
+		}
+	]
 }

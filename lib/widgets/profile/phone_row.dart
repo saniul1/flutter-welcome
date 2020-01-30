@@ -14,7 +14,7 @@ class PhoneRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<UserData>(context).user;
+    final user = Provider.of<UserData>(context).currentUser;
     return BodyRowItem(
       // text: '+919876543210',
       text: user.phoneNumber ?? 'Not added yet',

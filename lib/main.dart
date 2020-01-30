@@ -1,4 +1,7 @@
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_fire_plus/services/analytics.dart';
+import 'package:flutter_fire_plus/services/chats.dart';
 import 'package:provider/provider.dart';
 
 import 'package:flutter_fire_plus/services/auth.dart';
@@ -48,6 +51,8 @@ class MyApp extends StatelessWidget {
         ),
   };
 
+  final FirebaseAnalyticsObserver observer =
+      FirebaseAnalyticsObserver(analytics: Analytics.analytics);
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -61,9 +66,13 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(
           value: Storage(),
         ),
+        ChangeNotifierProvider.value(
+          value: Chats(),
+        ),
       ],
       child: Consumer<Auth>(
         builder: (context, auth, _) => MaterialApp(
+          navigatorObservers: <NavigatorObserver>[observer],
           title: 'Flutter Fire Plus',
           theme: ThemeData(
             primaryColor: MyColors.secondaryColor,

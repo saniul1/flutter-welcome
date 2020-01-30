@@ -2,13 +2,19 @@ import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_fire_plus/models/user.dart';
+import 'package:flutter_fire_plus/services/auth.dart';
 
 class UserData with ChangeNotifier {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final _userDB = Firestore.instance.collection("users");
+  final _currentUserDB = Firestore.instance.collection("users");
 
   User _user;
+  User _currentUser;
   var _isFriend = false;
+
+  User get currentUser {
+    return _currentUser;
+  }
 
   User get user {
     return _user;
@@ -21,22 +27,23 @@ class UserData with ChangeNotifier {
   Future<void> fetchAndSetUserData() async {
     final user = await FirebaseAuth.instance.currentUser();
     _user = await getUserData(user.uid);
+    _currentUser = await getUserData(user.uid);
     notifyListeners();
   }
 
   Future<void> setUserData(User user) async {
-    _user = user;
+    _currentUser = user;
     notifyListeners();
   }
 
   Future<User> getUserData(String id) async {
-    final documentSnapshot = await _userDB.document(id).get();
+    final documentSnapshot = await _currentUserDB.document(id).get();
     final user = User.fromSnapshot(documentSnapshot);
     return user;
   }
 
   Future<bool> checkIfFriendFromServer(String id) async {
-    final user = await getCurrentUser();
+    final user = await Auth.getCurrentUser();
     final userData = await getUserData(user.uid);
     var isFriend = false;
     if (userData.friends != null) {
@@ -54,9 +61,9 @@ class UserData with ChangeNotifier {
   }
 
   Future<void> addToFriendList(String id) async {
-    final user = await getCurrentUser();
-    final DocumentReference userRef = _userDB.document(user.uid);
-    final DocumentReference friendRef = _userDB.document(id);
+    final user = await Auth.getCurrentUser();
+    final DocumentReference userRef = _currentUserDB.document(user.uid);
+    final DocumentReference friendRef = _currentUserDB.document(id);
     await userRef.updateData({
       'friends': FieldValue.arrayUnion([id])
     });
@@ -64,10 +71,5 @@ class UserData with ChangeNotifier {
       'friends': FieldValue.arrayUnion([user.uid])
     });
     return;
-  }
-
-  Future<FirebaseUser> getCurrentUser() async {
-    FirebaseUser user = await _firebaseAuth.currentUser();
-    return user;
   }
 }

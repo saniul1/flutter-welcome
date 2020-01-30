@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +25,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     _imageFile = await ImagePicker.pickImage(source: ImageSource.gallery);
     print(_imageFile.uri.toString());
     if (_imageFile != null) {
+      if (!mounted) return;
       setState(() {});
       // uploadFile();
     }
@@ -32,7 +34,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   Widget build(BuildContext context) {
     final _id = Provider.of<Auth>(context, listen: false).userId;
-    final user = Provider.of<UserData>(context).user;
+    final user = Provider.of<UserData>(context).currentUser;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -49,7 +51,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       ? AssetImage('assets/images/img_not_available.jpeg')
                       : _imageFile != null
                           ? FileImage(_imageFile)
-                          : NetworkImage(user.imageURL),
+                          : CachedNetworkImageProvider(user.imageURL),
                   fit: BoxFit.cover,
                 ),
               ),

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_fire_plus/services/auth.dart';
@@ -54,7 +55,7 @@ class PeopleList extends StatelessWidget {
                 leading: CircleAvatar(
                   backgroundImage: user.imageURL == null
                       ? AssetImage('assets/images/avatar1.png')
-                      : NetworkImage(user.imageURL),
+                      : CachedNetworkImageProvider(user.imageURL),
                   backgroundColor: Colors.grey[200],
                 ),
                 title: Text(user.name),

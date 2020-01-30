@@ -121,6 +121,7 @@ class _LoginPhoneState extends State<LoginPhone> {
                       color: Colors.white,
                     ),
                     onChanged: (String newValue) {
+                      if (!mounted) return;
                       setState(() {
                         _countryCode = newValue;
                       });
@@ -193,6 +194,7 @@ class _SelectCountryState extends State<SelectCountry> {
         onChanged: (value) {
           print(value);
           setState(() {
+            if (!mounted) return;
             _selectVal = value;
           });
           widget.callback(value);

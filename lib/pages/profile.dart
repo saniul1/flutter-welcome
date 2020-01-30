@@ -38,6 +38,7 @@ class _ProfilePageState extends State<ProfilePage> {
           .fetchAndSetUserData()
           .then((_) {
         setState(() {
+          if (!mounted) return;
           _isLoading = false;
         });
       });
@@ -53,6 +54,7 @@ class _ProfilePageState extends State<ProfilePage> {
               .setUserData(user)
               .then((_) {
             setState(() {
+              if (!mounted) return;
               _isLoading = false;
             });
           });
@@ -67,7 +69,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     final headerSize = MediaQuery.of(context).size.height * 0.5 <= 320
         ? MediaQuery.of(context).size.height * 0.5
-        : 320;
+        : 320.0;
 
     return Scaffold(
       // appBar: AppBar(
@@ -95,111 +97,120 @@ class _ProfilePageState extends State<ProfilePage> {
               )
             : Builder(
                 builder: (ctx) {
-                  final user = Provider.of<UserData>(context).user;
-                  return Column(
-                    children: <Widget>[
-                      Header(
-                        size: headerSize,
-                        isSelf: isSelf,
-                      ),
-                      Container(
-                        height: MediaQuery.of(context).size.height - headerSize,
-                        child: SingleChildScrollView(
-                          child: Container(
-                            constraints: BoxConstraints(
-                              minHeight: MediaQuery.of(context).size.height -
-                                  headerSize,
+                  final user = Provider.of<UserData>(context).currentUser;
+                  return user == null
+                      ? SizedBox()
+                      : Column(
+                          children: <Widget>[
+                            Header(
+                              size: headerSize,
+                              isSelf: isSelf,
                             ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Column(
-                                  children: <Widget>[
-                                    Container(
-                                      color: MyColors.lightGrey,
-                                      constraints:
-                                          BoxConstraints(minHeight: 100),
-                                      child: Center(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text(
-                                            user.bio ??
-                                                'Tell us about your self',
-                                            style:
-                                                TextStyle(color: MyColors.grey),
-                                            textAlign: TextAlign.center,
-                                            softWrap: true,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    buildBodyRowDivider(),
-                                    EmailRow(
-                                      isSelf: isSelf,
-                                    ),
-                                    buildBodyRowDivider(),
-                                    PhoneRow(
-                                      isSelf: isSelf,
-                                    ),
-                                    buildBodyRowDivider(),
-                                    BodyRowItem(
-                                      text: 'Created On',
-                                      suffix: Text(
-                                          DateFormat('MM/dd/yyyy - hh:mm a')
-                                              .format(user.createdOn.toDate())),
-                                    ),
-                                    buildBodyRowDivider(),
-                                    BodyRowItem(
-                                      text: 'Last Visited',
-                                      suffix: Text(
-                                          DateFormat('MM/dd/yyyy - hh:mm a')
-                                              .format(user.lastSeen.toDate())),
-                                    ),
-                                  ],
-                                ),
-                                if (user.email != null && isSelf)
-                                  RaisedButton(
-                                    materialTapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
-                                    elevation: 0,
-                                    color: Colors.grey[200],
-                                    onPressed: () async {
-                                      try {
-                                        await Provider.of<Auth>(context,
-                                                listen: false)
-                                            .resetPassword(user.email);
-                                        Scaffold.of(context).showSnackBar(
-                                          SnackBar(
-                                            content: Text(
-                                                'Email Send! check your inbox.'),
-                                            action: SnackBarAction(
-                                              label: 'Dismiss',
-                                              onPressed: () {},
+                            Container(
+                              height: MediaQuery.of(context).size.height -
+                                  headerSize,
+                              child: SingleChildScrollView(
+                                child: Container(
+                                  constraints: BoxConstraints(
+                                    minHeight:
+                                        MediaQuery.of(context).size.height -
+                                            headerSize,
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Column(
+                                        children: <Widget>[
+                                          Container(
+                                            color: MyColors.lightGrey,
+                                            constraints:
+                                                BoxConstraints(minHeight: 100),
+                                            child: Center(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Text(
+                                                  user.bio ??
+                                                      'Tell us about your self',
+                                                  style: TextStyle(
+                                                      color: MyColors.grey),
+                                                  textAlign: TextAlign.center,
+                                                  softWrap: true,
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        );
-                                      } catch (error) {
-                                        print(error);
-                                      }
-                                    },
-                                    child: Text('Forgot Password? Reset'),
-                                  )
-                                else if (isSelf)
-                                  RaisedButton(
-                                    onPressed: () => addEmail(context),
-                                    child: Text('No Email found! Add'),
-                                    materialTapTargetSize:
-                                        MaterialTapTargetSize.shrinkWrap,
-                                    color: Colors.grey[200],
-                                  )
-                              ],
+                                          buildBodyRowDivider(),
+                                          EmailRow(
+                                            isSelf: isSelf,
+                                          ),
+                                          buildBodyRowDivider(),
+                                          PhoneRow(
+                                            isSelf: isSelf,
+                                          ),
+                                          buildBodyRowDivider(),
+                                          BodyRowItem(
+                                            text: 'Created On',
+                                            suffix: Text(DateFormat(
+                                                    'MM/dd/yyyy - hh:mm a')
+                                                .format(
+                                                    user.createdOn.toDate())),
+                                          ),
+                                          buildBodyRowDivider(),
+                                          BodyRowItem(
+                                            text: 'Last Visited',
+                                            suffix: Text(DateFormat(
+                                                    'MM/dd/yyyy - hh:mm a')
+                                                .format(
+                                                    user.lastSeen.toDate())),
+                                          ),
+                                        ],
+                                      ),
+                                      if (user.email != null && isSelf)
+                                        RaisedButton(
+                                          materialTapTargetSize:
+                                              MaterialTapTargetSize.shrinkWrap,
+                                          elevation: 0,
+                                          color: Colors.grey[200],
+                                          onPressed: () async {
+                                            try {
+                                              await Provider.of<Auth>(context,
+                                                      listen: false)
+                                                  .resetPassword(user.email);
+                                              Scaffold.of(context).showSnackBar(
+                                                SnackBar(
+                                                  content: Text(
+                                                      'Email Send! check your inbox.'),
+                                                  action: SnackBarAction(
+                                                    label: 'Dismiss',
+                                                    onPressed: () {},
+                                                  ),
+                                                ),
+                                              );
+                                            } catch (error) {
+                                              print(error);
+                                            }
+                                          },
+                                          child: Text('Forgot Password? Reset'),
+                                        )
+                                      else if (isSelf)
+                                        RaisedButton(
+                                          onPressed: () => addEmail(context),
+                                          child: Text('No Email found! Add'),
+                                          materialTapTargetSize:
+                                              MaterialTapTargetSize.shrinkWrap,
+                                          color: Colors.grey[200],
+                                        )
+                                    ],
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  );
+                          ],
+                        );
                 },
               ),
       ),
