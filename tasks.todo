@@ -16,7 +16,7 @@
   ☐ Push notification. @est(1h) @critical  @today 
 
 3. Admob Integration Kit:@critical 
-  ☐ Flutter firebase Admob @est(1h)
+  ✘ Flutter firebase Admob @est(1h) @cancelled(20-01-30 21:13)
 
 4. Firebase Chat Integration Kit:@critical 
   ✔ Chat @est(3h) @today @done(20-01-30 20:19)

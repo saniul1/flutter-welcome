@@ -6,7 +6,7 @@ import 'package:flutter_fire_plus/models/user.dart';
 import 'package:flutter_fire_plus/widgets/people_list.dart';
 
 class FriendList extends StatelessWidget {
-  FriendList({@required this.id});
+  FriendList({@required this.id, RouteSettings settings});
   final String id;
   @override
   Widget build(BuildContext context) {

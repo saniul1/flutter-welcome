@@ -1,9 +1,10 @@
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_fire_plus/services/analytics.dart';
-import 'package:flutter_fire_plus/services/chats.dart';
 import 'package:provider/provider.dart';
 
+import 'package:flutter_fire_plus/services/analytics.dart';
+import 'package:flutter_fire_plus/services/chats.dart';
+import 'package:flutter_fire_plus/services/notification.dart';
 import 'package:flutter_fire_plus/services/auth.dart';
 import 'package:flutter_fire_plus/services/storage.dart';
 import 'package:flutter_fire_plus/services/user_data.dart';
@@ -69,6 +70,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(
           value: Chats(),
         ),
+        // ChangeNotifierProvider.value(
+        //   value: Notifications(),
+        // ),
       ],
       child: Consumer<Auth>(
         builder: (context, auth, _) => MaterialApp(

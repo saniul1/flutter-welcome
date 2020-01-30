@@ -1,7 +1,4 @@
 {
-  // Use IntelliSense to learn about possible attributes.
-  // Hover to view descriptions of existing attributes.
-  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
     {
@@ -13,19 +10,25 @@
 			"name": "Device",
 			"request": "launch",
 			"type": "dart",
-			"deviceId": "SM J210F"
+			"deviceId": "SM J210F" // your real device id
 		},
 		{
-			"name": "Emulator",
+			"name": "Android",
 			"request": "launch",
 			"type": "dart",
 			"deviceId": "android"
+		},
+		{
+			"name": "iPhone",
+			"request": "launch",
+			"type": "dart",
+			"deviceId": "iphone"
 		},
 	],
 	"compounds": [
 		{
 			"name": "All Devices",
-			"configurations": ["Device", "Emulator"],
+			"configurations": ["Device", "Android", "iPhone"],
 		}
 	]
 }

@@ -7,6 +7,10 @@ class Analytics {
     return analytics.logLogin(loginMethod: methodUsed);
   }
 
+  static Future<void> logSignUp(String methodUsed) {
+    return analytics.logSignUp(signUpMethod: methodUsed);
+  }
+
   static Future<void> setUserType(String type, String value) {
     return analytics.setUserProperty(name: type, value: value);
   }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_fire_plus/services/analytics.dart';
+import 'package:flutter_fire_plus/widgets/notification.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
@@ -47,6 +49,8 @@ class _ProfilePageState extends State<ProfilePage> {
       Provider.of<UserData>(context, listen: false)
           .getUserData(widget.id)
           .then((user) {
+        Analytics.registerUserNavigation(
+            'profile/${user.name ?? user.email ?? user.phoneNumber}/$user.id');
         Provider.of<UserData>(context, listen: false)
             .checkFriend(widget.id)
             .then((value) {
@@ -70,7 +74,6 @@ class _ProfilePageState extends State<ProfilePage> {
     final headerSize = MediaQuery.of(context).size.height * 0.5 <= 320
         ? MediaQuery.of(context).size.height * 0.5
         : 320.0;
-
     return Scaffold(
       // appBar: AppBar(
       //   title: Text(''),
@@ -102,6 +105,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ? SizedBox()
                       : Column(
                           children: <Widget>[
+                            NotificationMessageHandler(),
                             Header(
                               size: headerSize,
                               isSelf: isSelf,

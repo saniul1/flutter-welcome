@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_fire_plus/services/analytics.dart';
 import 'package:provider/provider.dart';
 
 import 'package:flutter_fire_plus/services/auth.dart';
@@ -60,6 +61,7 @@ class Welcome extends StatelessWidget {
                     print('Signed_in_user: $_userId');
                     Navigator.pop(context);
                     if (_userId != null && _userId.length > 0) {
+                      Analytics.logLogin('google');
                       Navigator.of(context)
                           .pushReplacementNamed(ProfilePage.routeName);
                     }
@@ -82,6 +84,7 @@ class Welcome extends StatelessWidget {
                     print('Signed_in_user: $_userId');
                     Navigator.pop(context);
                     if (_userId != null && _userId.length > 0) {
+                      Analytics.logLogin('facebook');
                       Navigator.of(context)
                           .pushReplacementNamed(ProfilePage.routeName);
                     }

@@ -163,6 +163,20 @@ class _ChatScreenState extends State<ChatScreen> {
                     final messages = Messages.fromMap(
                         document.data, document.reference, _id);
                     final msgs = messages.messages;
+                    if (msgs.length == 0)
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              "start a conversation.",
+                              style:
+                                  TextStyle(color: MyColors.grey, fontSize: 16),
+                            ),
+                          ),
+                        ],
+                      );
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: msgs.map((msg) {

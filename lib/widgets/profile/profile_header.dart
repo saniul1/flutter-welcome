@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_fire_plus/services/analytics.dart';
 import 'package:flutter_fire_plus/services/chats.dart';
 import 'package:flutter_fire_plus/utils/helper.dart';
 import 'package:provider/provider.dart';
@@ -90,6 +91,8 @@ class Header extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (_) => FriendList(
                               id: user.id,
+                              settings: RouteSettings(
+                                  name: '${user.name}/friend-list'),
                             ),
                           ),
                         );
@@ -123,6 +126,7 @@ class Header extends StatelessWidget {
                         await Provider.of<Chats>(context, listen: false)
                             .startChatroomForUser(user);
                         Navigator.of(context).pop();
+                        Analytics.registerUserNavigation('chat');
                         Navigator.of(context).push(
                           MaterialPageRoute(builder: (_) => ChatScreen()),
                         );

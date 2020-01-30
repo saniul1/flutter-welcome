@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_fire_plus/services/analytics.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_fire_plus/services/auth.dart';
 import 'package:flutter_fire_plus/models/http_exception.dart';
@@ -44,6 +45,7 @@ class EnterOtp extends StatelessWidget {
         print('Signed_in_phone_user: $_userId');
         Navigator.pop(context);
         if (_userId != null && _userId.length > 0) {
+          Analytics.logLogin('phone');
           Navigator.of(context).pushNamedAndRemoveUntil(
               ProfilePage.routeName, (Route<dynamic> route) => false);
         }

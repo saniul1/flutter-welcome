@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_fire_plus/services/analytics.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_fire_plus/services/auth.dart';
 import 'package:flutter_fire_plus/utils/helper.dart';
@@ -40,6 +41,7 @@ class SignUpPage extends StatelessWidget {
         print('new_user: $_userId');
         Navigator.pop(context);
         if (_userId != null && _userId.length > 0) {
+          Analytics.logSignUp("email");
           Navigator.of(context).pushNamedAndRemoveUntil(
               ProfilePage.routeName, (Route<dynamic> route) => false);
         }
