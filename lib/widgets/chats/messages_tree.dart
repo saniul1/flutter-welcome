@@ -12,18 +12,22 @@ class MessagesTree extends StatelessWidget {
   const MessagesTree({
     Key key,
     @required this.messages,
+    @required this.goToBottom,
   }) : super(key: key);
 
   final List<Message> messages;
+  final Function goToBottom;
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserData>(context).currentUser;
-
+    var i = 0;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: messages.map((msg) {
+        i++;
         final bool isLeft = !msg.outgoing;
+        if (isLeft && i == messages.length) goToBottom();
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(

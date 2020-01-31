@@ -180,7 +180,7 @@ class SelectCountry extends StatefulWidget {
 }
 
 class _SelectCountryState extends State<SelectCountry> {
-  final List<String> _countryCodes = ['+91', '+90', '+80', '+00'];
+  final List<String> _countryCodes = ['+1', '+44', '+49', '+90', '+91'];
   var _selectVal = '';
   Widget build(BuildContext context) {
     return DropdownButton<String>(

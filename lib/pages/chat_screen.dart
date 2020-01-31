@@ -24,12 +24,13 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void goToBottom() {
     print('goToBottom()');
-    Future.delayed(Duration(milliseconds: 500))
-        .then((_) => _scrollController.animateTo(
-              _scrollController.position.maxScrollExtent,
-              duration: Duration(milliseconds: 200),
-              curve: Curves.easeOut,
-            ));
+    Future.delayed(Duration(milliseconds: 500)).then(
+      (_) => _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: Duration(milliseconds: 200),
+        curve: Curves.easeOut,
+      ),
+    );
   }
 
   @override
@@ -79,7 +80,10 @@ class _ChatScreenState extends State<ChatScreen> {
                       Messages.fromMap(document.data, document.reference, _id)
                           .messages;
                   if (messages.length == 0) return NoMessages();
-                  return MessagesTree(messages: messages);
+                  return MessagesTree(
+                    messages: messages,
+                    goToBottom: goToBottom,
+                  );
                 },
               ),
             ),
