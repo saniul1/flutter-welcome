@@ -76,11 +76,13 @@ class MyApp extends StatelessWidget {
       ],
       child: Consumer<Auth>(
         builder: (context, auth, _) => MaterialApp(
+          debugShowCheckedModeBanner: false,
           navigatorObservers: <NavigatorObserver>[observer],
           title: 'Flutter Fire Plus',
           theme: ThemeData(
             primaryColor: MyColors.secondaryColor,
             accentColor: MyColors.grey,
+            fontFamily: 'Roboto',
           ),
           home: FutureBuilder(
             future: auth.checkAuth(),

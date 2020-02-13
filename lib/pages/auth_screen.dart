@@ -21,20 +21,41 @@ class Welcome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
-        title: Text('Welcome'),
-      ),
+      // appBar: AppBar(
+      //   elevation: 0,
+      //   centerTitle: true,
+      //   title: Text('Welcome'),
+      // ),
       body: SingleChildScrollView(
         child: Container(
-          height: MediaQuery.of(context).size.height - 80,
+          height: MediaQuery.of(context).size.height,
           color: Theme.of(context).primaryColor,
           padding: const EdgeInsets.all(30),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Welcome',
+                      style: TextStyle(
+                        color: MyColors.white,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Expanded(
+                  child: Image.asset(
+                'assets/images/logo.png',
+                fit: BoxFit.contain,
+              )),
+              buildSizedBox(val: 16),
               LongButton(
                 label: 'Login with mobile',
                 callback: () {

@@ -12,7 +12,7 @@ import 'package:flutter_fire_plus/pages/profile.dart';
 class PeopleList extends StatelessWidget {
   const PeopleList({
     Key key,
-    this.category,
+    @required this.category,
     this.people,
   }) : super(key: key);
 

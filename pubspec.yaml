@@ -21,6 +21,7 @@ dependencies:
     sdk: flutter
   provider: ^4.0.1
   intl: ^0.16.1
+  flutter_launcher_icons: ^0.7.4
   cached_network_image: ^2.0.0
   image_picker: ^0.6.3
   firebase_auth: ^0.15.3
@@ -40,6 +41,13 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+flutter_icons:
+  ios: true
+  android: true
+  image_path_ios: "assets/app_icons/icon.png"
+  image_path_android: "assets/app_icons/icon.png"
+  adaptive_icon_background: "assets/app_icons/background.png"
+  adaptive_icon_foreground: "assets/app_icons/foreground.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

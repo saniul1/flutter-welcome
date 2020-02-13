@@ -15,8 +15,8 @@ class User {
 
   User.fromMap(Map<String, dynamic> map, {this.reference})
       : id = map['uid'],
-        name = map['displayName'],
-        bio = map['bio'],
+        name = map['displayName'] ?? '',
+        bio = map['bio'] ?? '',
         email = map['email'],
         imageURL = map['photoURL'],
         phoneNumber = map['phoneNumber'],

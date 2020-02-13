@@ -74,6 +74,9 @@ class _ProfilePageState extends State<ProfilePage> {
     final headerSize = MediaQuery.of(context).size.height * 0.5 <= 320
         ? MediaQuery.of(context).size.height * 0.5
         : 320.0;
+    // Future.delayed(Duration(seconds: 1))
+    //     .then((value) => Provider.of<Auth>(context, listen: false).signOut());
+
     return Scaffold(
       // appBar: AppBar(
       //   title: Text(''),
