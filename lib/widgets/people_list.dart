@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_fire_plus/models/friends.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_fire_plus/services/auth.dart';
 import 'package:flutter_fire_plus/services/user_data.dart';
@@ -67,11 +68,7 @@ class PeopleList extends StatelessWidget {
                       return isFriend == null
                           ? SizedBox()
                           : isFriend || user.id == _id
-                              ? buildFriendCount(
-                                  user.friends != null
-                                      ? user.friends.length.toString()
-                                      : '0',
-                                )
+                              ? FriendCount(id: user.id)
                               : IconButton(
                                   icon: Icon(Icons.person_add),
                                   onPressed: () async {
@@ -105,6 +102,23 @@ class PeopleList extends StatelessWidget {
         shape: BoxShape.circle,
       ),
       child: Text(count),
+    );
+  }
+}
+
+class FriendCount extends StatelessWidget {
+  FriendCount({this.id});
+  final String id;
+  // await Provider.of<UserData>(context, listen: false).getFriends(id)
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+        color: MyColors.lightGrey,
+        shape: BoxShape.circle,
+      ),
+      child: Text('count'),
     );
   }
 }

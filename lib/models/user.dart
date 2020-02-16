@@ -8,7 +8,6 @@ class User {
   final String phoneNumber;
   final Timestamp createdOn;
   final List logInData;
-  final List friends;
   final String imageURL;
   final bool isPhoneVerified;
   final DocumentReference reference;
@@ -22,8 +21,7 @@ class User {
         phoneNumber = map['phoneNumber'],
         isPhoneVerified = map['isPhoneVerified'],
         createdOn = map['createdOn'],
-        logInData = map['lastSeen'],
-        friends = map['friends'];
+        logInData = map['lastSeen'];
 
   User.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(snapshot.data, reference: snapshot.reference);

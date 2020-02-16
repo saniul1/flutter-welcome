@@ -1,16 +1,19 @@
 import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_fire_plus/models/friends.dart';
 import 'package:flutter_fire_plus/models/user.dart';
 import 'package:flutter_fire_plus/services/auth.dart';
 
 class UserData with ChangeNotifier {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  // final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final Firestore _db = Firestore.instance;
   final _currentUserDB = Firestore.instance.collection("users");
 
   User _user;
   User _currentUser;
   var _isFriend = false;
+  List<Friend> _friends;
 
   User get currentUser {
     return _currentUser;
@@ -22,6 +25,10 @@ class UserData with ChangeNotifier {
 
   bool get isFriend {
     return _isFriend;
+  }
+
+  List<Friend> get friends {
+    return _friends;
   }
 
   Future<void> fetchAndSetUserData() async {
@@ -37,21 +44,37 @@ class UserData with ChangeNotifier {
   }
 
   Future<User> getUserData(String id) async {
-    final documentSnapshot = await _currentUserDB.document(id).get();
-    final user = User.fromSnapshot(documentSnapshot);
-    return user;
+    try {
+      final documentSnapshot = await _currentUserDB.document(id).get();
+      final user = User.fromSnapshot(documentSnapshot);
+      return user;
+    } catch (e) {
+      print('error: $e');
+      throw e;
+    }
+  }
+
+  Future<List<Friend>> getFriends(String id) async {
+    final friendsSnapshot = await _db
+        .collection('users')
+        .document(id)
+        .collection('friends')
+        .getDocuments();
+    final friends = Friends.fromDocumentSnapShot(friendsSnapshot);
+    _friends = friends.friendsList;
+    notifyListeners();
+    return friends.friendsList;
   }
 
   Future<bool> checkIfFriendFromServer(String id) async {
     final user = await Auth.getCurrentUser();
-    final userData = await getUserData(user.uid);
-    var isFriend = false;
-    if (userData.friends != null) {
-      userData.friends.forEach((friendID) {
-        if (friendID == id) isFriend = true;
-      });
-    }
-    return isFriend;
+    final friend = await _db
+        .collection('users')
+        .document(id)
+        .collection('friends')
+        .document(user.uid)
+        .get();
+    return friend.data != null;
   }
 
   Future<void> checkFriend(String id) async {
@@ -62,13 +85,25 @@ class UserData with ChangeNotifier {
 
   Future<void> addToFriendList(String id) async {
     final user = await Auth.getCurrentUser();
-    final DocumentReference userRef = _currentUserDB.document(user.uid);
-    final DocumentReference friendRef = _currentUserDB.document(id);
-    await userRef.updateData({
-      'friends': FieldValue.arrayUnion([id])
+    final DocumentReference userRef = _db
+        .collection('users')
+        .document(user.uid)
+        .collection('friends')
+        .document(id);
+    final DocumentReference friendRef = _db
+        .collection('users')
+        .document(id)
+        .collection('friends')
+        .document(user.uid);
+    await userRef.setData({
+      'id': id,
+      'initiator': user.uid,
+      'createdAt': FieldValue.serverTimestamp()
     });
-    await friendRef.updateData({
-      'friends': FieldValue.arrayUnion([user.uid])
+    await friendRef.setData({
+      'id': user.uid,
+      'initiator': user.uid,
+      'createdAt': FieldValue.serverTimestamp()
     });
     return;
   }
